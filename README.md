@@ -1,7 +1,20 @@
-taed2-PedestrianDetection
+TAED2 - Pedestrian Detection
 ==============================
 
-Instance segmentation for pedestrian detection
+Pedestrain Detection is an important aspect in various domains as autonomous vehicles, surveillance systems and smart cities. For this reason, in this project, we are interested in enhances our system's accuracy by distinguishing individual pedestrains while using instance segmentation technique, one of the most advanced computer vision task. 
+
+This project emphasizes the integration of ML into software engineering to increase its reliability, scalability and maintainability. So we will cover ML techniques for data preprocessing and model evaluation while also addressing software engineering aspects like version control, documentation and continuous integration.
+
+All of this is supervised by the subject "Advanced Topics in Data Engineering 2" at the Polytechnic University of Barcelona (UPC), thanks to the initiative that was taken to ensure that students in the Data Engineering degree have knowledge of the software engineering best practices that must be followed to build quality work within the ML industry.
+
+Summary of the project
+------------
+
+Here, we provide two links for quick access to the dataset card and model card that summarize our project.
+
+- Dataset card:
+
+- Model card:
 
 Project Organization
 ------------
