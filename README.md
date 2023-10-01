@@ -10,7 +10,7 @@ All of this is supervised by the subject "Advanced Topics in Data Engineering 2"
 Summary of the project
 ------------
 
-Here, we provide two links for quick access to the dataset card and model card that summarize our project.
+Below, we provide two links for quick access to the dataset card and model card that summarize our project.
 
 - Dataset card:
 
