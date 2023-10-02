@@ -95,13 +95,18 @@ For each one of the different hyperparameters, and evaluation of the model have 
 
 ### Results
 
-We will be able to write this part when we are able to finish all the experiments and choose the best model in terms of AR and AP scores.
+The top-performing option is the fine-tunned model specialized specifically for one class: "persons" (the ‘baseline’ in our experiments). Both models have the highest AR and AP.
 
 So the model, having the following characterstics (model settings):
-POSAR LA MILLOR COMBINACIÓ D'HIPERPARÀMETRES VISTA
+- Batch size training data loader = 2
+- Size hidden size mask predictor = 256
+- Number of epochs = 3
 
 Achieved the following results (model metrics of the last epoch):
-POSAR RESULTATS DEL MODEL BO
+| Metric                | Bounding box | Segmentation |
+|-----------------------|-------------:|-------------:|
+| AP                    | 0.837 (83.7%)| 0.782 (78.2%)|
+| AR                    | 0.405 (40.5%)| 0.371 (37.1%)| 
 
 ## Model Examination
 
@@ -115,9 +120,7 @@ With milestone 3 we will be able to fill this part.
 
 With milestone 3 we will be able to fill this part.
 
-## Technical Specifications [optional]
-
-### Model Architecture and Objective
+## Model Architecture
 
 Mask R-CNN is a two stage structure that combines the architecture of Faster R-CNN, which is primarily designed for object detection, with additional components for pixel-level mask prediction. It achieves this by adding a branch for predicting an object mask in parallel with the existing branch for bounding box recognition of the Faster R-CNN model. Moreover, to fix the misalignment utilises a simple, quantization-free layer, called RoIAlign, that faithfully preserves exact spatial locations.
 
