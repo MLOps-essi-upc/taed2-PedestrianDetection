@@ -1,9 +1,3 @@
----
-'NULL': null
-output:
-  html_document:
-    df_print: paged
----
 
 # Model Card for MASK R-CNN ResNet-50
 
@@ -15,31 +9,18 @@ More over, a ResNet architecture is implemented to overcome the vanishing gradie
 
 ### Model Description
 
-- **Developed by:**
+- **Developed by:** Group of researchers at Facebook AI Research (FAIR) including Kaiming He, Georgia Gkioxari, Piotr Gollár and Ross Girshick, among others.
 
-Group of researchers at Facebook AI Research (FAIR) including Kaiming He, Georgia Gkioxari, Piotr Gollár and Ross Girshick, among others.
+- **Model type:** Mask R-CNN is a deep learning model that belongs to the family of Convolutional Neural Networks (CNNs). It is specifically designed for the task of instance segmentation, which combines object detection (identifying objects and their bounding boxes) and semantic segmentation (pixel-wise object labeling, masks). 
 
-- **Model type:**
+- **Language(s) (NLP):** It is typically implemented in Python using deep learning frameworks such as TensorFlow or PyTorch.
 
-Mask R-CNN is a deep learning model that belongs to the family of Convolutional Neural Networks (CNNs). It is specifically designed for the task of instance segmentation, which combines object detection (identifying objects and their bounding boxes) and semantic segmentation (pixel-wise object labeling, masks). 
-
-- **Language(s) (NLP):**
-
-It is typically implemented in Python using deep learning frameworks such as TensorFlow or PyTorch.
-
-- **Finetuned from model:**
-
-The model base [model base]("https://pytorch.org/vision/main/models/generated/torchvision.models.detection.maskrcnn_resnet50_fpn.html") used is the one found in PyTorch.
+- **Finetuned from model:** The model base [model base]("https://pytorch.org/vision/main/models/generated/torchvision.models.detection.maskrcnn_resnet50_fpn.html") used is the one found in PyTorch.
 
 ## Uses
-
-Mask R-CNN has a wide range of applications, but in this case is used for:
-
-- **Object Instance Segmentation:** To segment and identify objects in images while providing pixel-level masks for each instance of the object.
-
 ### Direct Use
 
-Direct use of the model involves training the model on our dataset to ahieve instance segmentation in pedestrian detection.
+Direct use of the model involves training the model on our dataset to ahieve instance segmentation in pedestrian detection. So, it is able to identify objects in images while providing pixel-level masks for eash instance of the object.
 
 ### Out-of-Scope Use
 
@@ -47,64 +28,39 @@ This model may not be suitable for detect another class different form persons.
 
 ## Bias, Risks, and Limitations
 
-<!-- This section is meant to convey both technical and sociotechnical limitations. -->
+The ***biases*** in the model are typically a reflection of the biases present in the training data. In this case, we have only one type of images; where one or two persons are in a vertial position, walking, with asiatic characteristics and a determine stature.  
 
-{{ bias_risks_limitations | default("[More Information Needed]", true)}}
+These characteristics may lead to some potential ***risks*** and ***limitations*** associated with the model:
 
-The ***biases*** in the model are typically a reflection of the biases present in the training data. If the training data is biased towards certain classes or underrepresents others, the model may exhibit biased behavior in its predictions.
+- **Data Requirement - Loss of information:** It is important to have a quality of data, so here you could have insufficent images and a poor sample of the population.
 
-Some ***risks*** and ***limitations*** associated with Mask R-CNN include:
+- **Computational Intensity:** The model is computationally intensive and may require powerful hardware (GPUs) for real-time applications.
 
-- **Computational Intensity:** Mask R-CNN is computationally intensive and may require powerful hardware (GPUs) for real-time applications.
-
-- **Data Requirement:** Training Mask R-CNN effectively often requires large annotated datasets, which may be costly and time-consuming to create.
-
-- **Overfitting:** Like other deep learning models, Mask R-CNN can overfit to the training data if not properly regularized or if the dataset is small.
-
-- **Limited to 2D:** Mask R-CNN operates in 2D space and may not be suitable for tasks that require 3D understanding.
-
-- **Accuracy Trade-offs:** There may be a trade-off between accuracy and speed when using Mask R-CNN, depending on the application's requirements.
+- **Limited to 2D:** The model operates in 2D space and may not be suitable for tasks that require 3D understanding.
 
 ### Recommendations
 
-<!-- This section is meant to convey recommendations with respect to the bias, risk, and technical limitations. -->
-
-{{ bias_recommendations | default("Users (both direct and downstream) should be made aware of the risks, biases and limitations of the model. More information needed for further recommendations.", true)}}
+Users should be made aware of the risks, biases and limitations of the model. 
 
 ## How to Get Started with the Model
 
-Use the code below to get started with the model.
-
-{{ get_started_code | default("[More Information Needed]", true)}}
+Use the code below to get started with the model. In order for the code to work, its important to have the data and the code uploaded in google drive, this way you could connect the code to your content drive. Moreover, some package need to be installed, as Python, PyTorhc, NumPy, pickle. ML flow is used to but during the code ou will find the command to install it.
 
 ## Training Details
 
 ### Training Data
 
-<!-- This should link to a Data Card, perhaps with a short stub of information on what the training data is all about as well as documentation related to data pre-processing or additional filtering. -->
+The dataset used is the *PenFundanPed Dataset*, which we have preprocessed by applying data augmentation and structuring it based on the `DatasetPedestrian` class. This has allowed us to have images for training, validation, and testing. For the training images, we applied three transformations, and their information is organized with various fields such as `image`, `boxes`, `labels`, `masks`, `image_id`, etc.
 
-{{ training_data | default("[More Information Needed]", true)}}
-
-EXPLICAR AQUÍ EL DATASET (mirar dataset card)
+Al this information, and more, is witting in the [Dataset Card]("https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/data/dataset-card.md") below.
 
 ### Training Procedure 
 
 <!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
 
-#### Preprocessing [optional]
-
-{{ preprocessing | default("[More Information Needed]", true)}}
-
-
 #### Training Hyperparameters
 
 - **Training regime:** {{ training_regime | default("[More Information Needed]", true)}} <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
-
-#### Speeds, Sizes, Times [optional]
-
-<!-- This section provides information about throughput, start/end time, checkpoint size if relevant, etc. -->
-
-{{ speeds_sizes_times | default("[More Information Needed]", true)}}
 
 ## Evaluation
 
@@ -134,51 +90,39 @@ EXPLICAR AQUÍ EL DATASET (mirar dataset card)
 
 {{ results | default("[More Information Needed]", true)}}
 
-#### Summary
-
-{{ results_summary | default("", true) }}
-
-## Model Examination [optional]
+## Model Examination
 
 <!-- Relevant interpretability work for the model goes here -->
 
-{{ model_examination | default("[More Information Needed]", true)}}
+With milestone 3 we will be able to fill this part.
 
 ## Environmental Impact
 
 <!-- Total emissions (in grams of CO2eq) and additional considerations, such as electricity usage, go here. Edit the suggested text below accordingly -->
 
-Carbon emissions can be estimated using the [Machine Learning Impact calculator](https://mlco2.github.io/impact#compute) presented in [Lacoste et al. (2019)](https://arxiv.org/abs/1910.09700).
-
-- **Hardware Type:** {{ hardware | default("[More Information Needed]", true)}}
-- **Hours used:** {{ hours_used | default("[More Information Needed]", true)}}
-- **Cloud Provider:** {{ cloud_provider | default("[More Information Needed]", true)}}
-- **Compute Region:** {{ cloud_region | default("[More Information Needed]", true)}}
-- **Carbon Emitted:** {{ co2_emitted | default("[More Information Needed]", true)}}
+With milestone 3 we will be able to fill this part.
 
 ## Technical Specifications [optional]
 
 ### Model Architecture and Objective
 
-{{ model_specs | default("[More Information Needed]", true)}}
+Mask R-CNN is a two stage structure that combines the architecture of Faster R-CNN, which is primarily designed for object detection, with additional components for pixel-level mask prediction. It achieves this by adding a branch for predicting an object mask in parallel with the existing branch for bounding box recognition of the Faster R-CNN model. Moreover, to fix the misalignment utilises a simple, quantization-free layer, called RoIAlign, that faithfully preserves exact spatial locations.
 
-It achieves this by adding a branch for predicting an object mask in parallel with the existing branch for bounding box recognition of the Faster R-CNN model. Moreover, to fix the misalignment utilises a simple, quantization-free layer, called RoIAlign, that faithfully preserves exact spatial locations.
+Here's an overview of its key components:
 
-Mask R-CNN is a two stage structure that combines the architecture of Faster R-CNN, which is primarily designed for object detection, with additional components for pixel-level mask prediction. Here's an overview of its key components:
+1) **Backbone Network:** It is used a ResNet-50 to extracks features from the input image.
 
-1) **Backbone Network:** Mask R-CNN typically uses a convolutional neural network (CNN) as its backbone, such as ResNet or ResNeXt. This backbone extracts features from the input image.
+2) **Region Proposal Network (RPN):** Similar to Faster R-CNN, this model employs an RPN to propose regions of interest (ROIs) where objects might be present. These ROIs are then passed to subsequent stages for further processing.
 
-2) **Region Proposal Network (RPN):** Similar to Faster R-CNN, Mask R-CNN employs an RPN to propose regions of interest (ROIs) where objects might be present. These ROIs are then passed to subsequent stages for further processing.
-
-3) **ROI Align:** Instead of the ROI pooling used in Faster R-CNN, Mask R-CNN uses ROI Align to extract features from the ROIs. ROI Align is more precise in aligning pixel-level features, which is crucial for generating accurate instance masks.
+3) **ROI Align:** Uses ROI Align to extract features from the ROIs. ROI Align is more precise in aligning pixel-level features, which is crucial for generating accurate instance masks.
 
 4) **Mask Head:** This component is responsible for generating the pixel-level masks for each detected object. It typically consists of a stack of convolutional layers that predict a binary mask for each ROI (1 if there is the object below and 0 otherwise).
 
-5) **Object Detection Head:** In addition to the mask prediction, Mask R-CNN also includes an object detection head that predicts the class labels and bounding box coordinates for the detected objects, with the same structure of the model Faster R-CNN.
+5) **Object Detection Head:** In addition to the mask prediction, the model also includes an object detection head that predicts the class labels and bounding box coordinates for the detected objects, with the same structure of the model Faster R-CNN.
 
-ES POT INTENTAR POSAR UNA IMATGE DE L'ARQUITECTURA
+![Model's structure schema]("https://www.researchgate.net/publication/358458237/figure/fig1/AS:1121407480139776@1644375786623/Mask-R-CNN-is-a-CNN-made-of-backbone-composed-by-a-ResNet101-and-a-feature-pyramid.png")
 
-In addition, in this model there are 5 types of losses distinguished, depending on the stage we are in:
+In addition, in this model there are 5 types of losses distinguished, depending on the stage you are in:
 
 - *Regression loss:* to determine if a bounding box is proposed or not proposed.
 
@@ -190,89 +134,8 @@ In addition, in this model there are 5 types of losses distinguished, depending 
 
 - *Mask prediction loss:* to generates the pixel-level mask for each object, in binary form (1 belongs to the object, 0 otherwise).
 
-Finally, as we already said in previous sections, the primary ***objectives*** of Mask R-CNN are:
-
-- **Object Detection:** Identify and locate objects in an image with bounding boxes and class labels.
-
-- **Instance Segmentation:** Generate pixel-level masks for each individual object instance.
-
-- **Semantic Segmentation (Optional):** Some variants of Mask R-CNN can also be used for semantic segmentation, where each pixel is labeled with a category. 
-
-So all of this makes this model a versatile tool in computer vision applications.
-
-### Compute Infrastructure
-
-{{ compute_infrastructure | default("[More Information Needed]", true)}}
-
-SUPOSO QUE ESTÀ TOT A CONTINUACIÓ I AQUÍ NO HE DE POSAR RES
-
-#### Hardware
-
-{{ hardware | default("[More Information Needed]", true)}}
-
-Mask R-CNN, being a deep neural network, benefits from powerful hardware, often including:
-
-- *Graphics Processing Units (GPUs):* High-end GPUs like NVIDIA's Tesla or GeForce series are commonly used to accelerate training and inference.
-
-- *Multi-GPU setups:* Training Mask R-CNN on large datasets can be significantly accelerated using multiple GPUs in parallel.
-
-- *Cloud Computing:* Many researchers and practitioners use cloud-based platforms (e.g., AWS, GCP, Azure) to access GPU resources on-demand.
-
-#### Software
-
-{{ software | default("[More Information Needed]", true)}}
-
-The software aspects that are most commonly used for this model are:
-
-- *Deep Learning Frameworks:* Mask R-CNN is implemented using deep learning frameworks such as TensorFlow or PyTorch.
-
-- *Python:* The model code and its associated libraries are typically written in Python.
-
-- *CUDA:* CUDA is a parallel computing platform and API developed by NVIDIA for GPU acceleration. It's often used in conjunction with deep learning frameworks to speed up computation on GPUs.
-
-- *Datasets:* Common datasets used for training Mask R-CNN include COCO (Common Objects in Context), Pascal VOC, and custom datasets tailored to specific applications.
-
-- *Preprocessing and Postprocessing Code:* Image preprocessing and postprocessing code is often used to prepare input data and interpret model outputs.
-
-- *Evaluation Metrics:* Metrics such as Intersection over Union (IoU) and mean Average Precision (mAP) are commonly used to evaluate the performance of Mask R-CNN models.
-
-## Citation [optional]
-
-<!-- If there is a paper or blog post introducing the model, the APA and Bibtex information for that should go in this section. -->
-
-**BibTeX:**
-
-{{ citation_bibtex | default("[More Information Needed]", true)}}
-
-**APA:**
-
-{{ citation_apa | default("[More Information Needed]", true)}}
-
-## Glossary [optional]
-
-<!-- If relevant, include terms and calculations in this section that can help readers understand the model or model card. -->
-
-{{ glossary | default("[More Information Needed]", true)}}
-
-## More Information [optional]
-
-{{ more_information | default("[More Information Needed]", true)}}
-
-## Model Card Authors [optional]
-
-{{ model_card_authors | default("[More Information Needed]", true)}}
-
 ## Model Card Contact
 
-{{ model_card_contact | default("[More Information Needed]", true)}}
-
-NO SÉ QUÈ S'HA DE POSAR:
-You can include any additional information or context that may be relevant, such as:
-
-The specific implementation or variant of Mask R-CNN you are using (if applicable).
-The purpose or application for which you are using Mask R-CNN.
-Any modifications or adaptations you've made to the model for your specific project.
-The dataset(s) you used for training or fine-tuning the model.
-Make sure to provide accurate and up-to-date contact information in case there are inquiries or collaborations related to your use of Mask R-CNN.
+Rodrigo Bonferroni (@RodrigoBonferroni), Arlet Corominas (@arletcoro) and Clàudia Mur (@claudiamur).
 
 

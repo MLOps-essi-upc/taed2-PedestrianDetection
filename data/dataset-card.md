@@ -1,8 +1,3 @@
----
-YAML tags (full spec here: https://github.com/huggingface/hub-docs/blob/main/datasetcard.md?plain=1):
-- copy-paste the tags obtained with the online tagging app: https://huggingface.co/spaces/huggingface/datasets-tagging
----
-
 # Dataset Card PedestrianDataset
 
 ## Table of Contents
