@@ -52,7 +52,7 @@ Use the code below to get started with the model. In order for the code to work,
 
 The dataset used is the *PenFundanPed Dataset*, which we have preprocessed by applying data augmentation and structuring it based on the `DatasetPedestrian` class. This has allowed us to have images for training, validation, and testing. For the training images, we applied three transformations, and their information is organized with various fields such as `image`, `boxes`, `labels`, `masks`, `image_id`, etc.
 
-Al this information, and more, is witting in the [Dataset Card]("https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/data/dataset-card.md") below.
+Al this information, and more, is witting in the [Dataset Card](https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/data/dataset-card.md) below.
 
 ### Training Procedure 
 
@@ -120,7 +120,7 @@ Here's an overview of its key components:
 
 5) **Object Detection Head:** In addition to the mask prediction, the model also includes an object detection head that predicts the class labels and bounding box coordinates for the detected objects, with the same structure of the model Faster R-CNN.
 
-![Model's structure schema]("https://www.researchgate.net/publication/358458237/figure/fig1/AS:1121407480139776@1644375786623/Mask-R-CNN-is-a-CNN-made-of-backbone-composed-by-a-ResNet101-and-a-feature-pyramid.png")
+![Model's structure schema](https://www.researchgate.net/publication/358458237/figure/fig1/AS:1121407480139776@1644375786623/Mask-R-CNN-is-a-CNN-made-of-backbone-composed-by-a-ResNet101-and-a-feature-pyramid.png)
 
 In addition, in this model there are 5 types of losses distinguished, depending on the stage you are in:
 
