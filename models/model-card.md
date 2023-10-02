@@ -50,23 +50,23 @@ Use the code below to get started with the model. In order for the code to work,
 
 ### Training Data
 
-The dataset used is the *PenFundanPed Dataset*, which we have preprocessed structuring it based on the `DatasetPedestrian` class, which means that we only detect one classe. This has allowed us to have images for training, validation, and testing and with their information organized with various fields such as `image`, `boxes`, `labels`, `masks`, `image_id`, etc. Moreover, on the training images, we applied three transformations to do data augmentation.
+The dataset used is the *PenFundanPed Dataset*, which we have preprocessed structuring it based on the `DatasetPedestrian` class. This has allowed us to have images for training, validation, and testing and with their information organized with various fields such as `image`, `boxes`, `labels`, `masks`, `image_id`, etc. Moreover, on the training images, we applied three transformations to do data augmentation.
 
 Al this information, and more, is witting in the [Dataset Card](https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/data/dataset-card.md) below.
 
 ### Training Procedure 
 
-This model was constructed based on the Mask R-CNN ResNet-50 model, which was pretained to detect objects in the popular Coco dataset. But we have performed different experiments to choose the best model for our practice. So, we first trained using the model Mask R-CNN ResNet-50 of the shelf and then with fine-tuning, where we had to modified the architecture of the bounding box and the mask predictor. This way, during the fine-tune, we were able to change some hyperparameters to search for the best performance.
+This model was constructed based on the Mask R-CNN ResNet-50 model, which was pretained to detect objects in the popular Coco dataset. But we have performed different experiments to choose the best model for our practice. So, we first trained using the model Mask R-CNN ResNet-50 of the shelf, but only detecting one classe, and then with fine-tuning, where we had to modified the architecture of the bounding box and the mask predictor. This way, during the fine-tune, we were able to change some hyperparameters to search for the best performance.
 
 #### Training Hyperparameters
 
 The model baseline have especifics settings that, during the fine-tuning we change it with different values:
 
-|                         | Baseline | Fine-tune  |
-|-------------------------|---------:|-----|-----:|
-| Size hidden layer       |   216    |  128 | 512 |
-| Batch size              |  2       | 4    | 8   |
-| Number of epochs        | 3        |      2     |
+| Metric                | Baseline | Fine-tune | Fine-tune |
+|-----------------------|---------:|----------:|----------:|
+| Size hidden layer     |      216 |       128 |       512 |
+| Batch size            |        2 |         4 |         8 |
+| Number of epochs      |        3 |         2 |         2 |
 
 ## Evaluation
 
