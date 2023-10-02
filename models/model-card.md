@@ -56,11 +56,11 @@ Al this information, and more, is witting in the [Dataset Card](https://github.c
 
 ### Training Procedure 
 
-This model was constructed based on the Mask R-CNN ResNet-50 model, which was pretained to detect objects in the popular Coco dataset. But we have performed different experiments to choose the best model for our practice. So, we first trained using the model Mask R-CNN ResNet-50 of the shelf and then with fine-tuning, where we had to modified the architecture of the bounding box and the mask predictor to only detect detect one class (person). This way, during the fine-tune, we were able to change some hyperparameters to search for the best performance.
+Our models was constructed based on the Mask R-CNN ResNet-50 model, which was pretained to detect objects in the popular Coco dataset. But we have performed different experiments to choose the best model for our practice. So, we first trained using the model Mask R-CNN ResNet-50 of the shelf and then with fine-tuning, where we had to modified the architecture of the bounding box and the mask predictor to only detect detect one class (person). This way, during the fine-tune, we were able to change some hyperparameters to search for the best performance.
 
 #### Training Hyperparameters
 
-The model baseline have especifics settings that, during the fine-tuning we change it with different values:
+The model baseline have especifics settings that, during the fine-tuning we changed it with different values:
 
 | Metric                | Baseline | Fine-tune (1) | Fine-tune (2) |
 |-----------------------|---------:|--------------:|--------------:|
