@@ -15,7 +15,7 @@ More over, a ResNet architecture is implemented to overcome the vanishing gradie
 
 - **Language(s) (NLP):** It is typically implemented in Python using deep learning frameworks such as TensorFlow or PyTorch.
 
-- **Finetuned from model:** The model base [model base]("https://pytorch.org/vision/main/models/generated/torchvision.models.detection.maskrcnn_resnet50_fpn.html") used is the one found in PyTorch.
+- **Finetuned from model:** The model base [model base](https://pytorch.org/vision/main/models/generated/torchvision.models.detection.maskrcnn_resnet50_fpn.html) used is the one found in PyTorch.
 
 ## Uses
 ### Direct Use
@@ -120,7 +120,7 @@ Here's an overview of its key components:
 
 5) **Object Detection Head:** In addition to the mask prediction, the model also includes an object detection head that predicts the class labels and bounding box coordinates for the detected objects, with the same structure of the model Faster R-CNN.
 
-![Model's structure schema](https://www.researchgate.net/publication/358458237/figure/fig1/AS:1121407480139776@1644375786623/Mask-R-CNN-is-a-CNN-made-of-backbone-composed-by-a-ResNet101-and-a-feature-pyramid.png)
+![Model's structure schema](https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/models/Structure%20of%20model%20Mask%20R-CNN.png)
 
 In addition, in this model there are 5 types of losses distinguished, depending on the stage you are in:
 
