@@ -50,7 +50,7 @@ Use the code below to get started with the model. In order for the code to work,
 
 ### Training Data
 
-The dataset used is the *PenFundanPed Dataset*, which we have preprocessed by applying data augmentation and structuring it based on the `DatasetPedestrian` class. This has allowed us to have images for training, validation, and testing. For the training images, we applied three transformations, and their information is organized with various fields such as `image`, `boxes`, `labels`, `masks`, `image_id`, etc.
+The dataset used is the *PenFundanPed Dataset*, which we have preprocessed structuring it based on the `DatasetPedestrian` class, which means that we only detect one classe. This has allowed us to have images for training, validation, and testing and with their information organized with various fields such as `image`, `boxes`, `labels`, `masks`, `image_id`, etc. Moreover, on the training images, we applied three transformations to do data augmentation.
 
 Al this information, and more, is witting in the [Dataset Card](https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/data/dataset-card.md) below.
 
@@ -74,9 +74,7 @@ For each one of the different hyperparameters, and evaluation of the model have 
 
 #### Metrics
 
-- **Average recall (AR):** (for the mask and bounding boxes) evaluates how well the model detects and recalls correct ojects, measuring the proportion of the true positive predictions that the model correctly identifies.
-
-- **Average precisions (AP):** (for the mask and bounding boxes) quantifies how well the model precisely identifies and localizes objects within the image, considering both the accuracy and spatial overlap of the predictions.
+##### Train
 
 - **Loss:** general loss metric that likely represents the overall loss of the model. It is the combination of the folowwing losses.
 
@@ -89,6 +87,11 @@ For each one of the different hyperparameters, and evaluation of the model have 
 - **Loss objectness:** loss associated with objectness prediction to determine whether an object is present in a specific region of an image.
 
 - **Loss RPN box regression:** quantifies the loss for region proposal network (RPN) bounding box regression, measuring how well the model is proposing object regions.
+
+##### Test
+- **Average recall (AR):** (for the mask and bounding boxes) evaluates how well the model detects and recalls correct ojects, measuring the proportion of the true positive predictions that the model correctly identifies.
+
+- **Average precisions (AP):** (for the mask and bounding boxes) quantifies how well the model precisely identifies and localizes objects within the image, considering both the accuracy and spatial overlap of the predictions.
 
 ### Results
 
