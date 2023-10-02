@@ -12,9 +12,9 @@ Summary of the project
 
 Below, we provide two links for quick access to the dataset card and model card that summarize our project.
 
-- Dataset card:
+- [Dataset card](https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/data/dataset-card.md)
 
-- Model card:
+- [Model card](https://github.com/MLOps-essi-upc/taed2-PedestrianDetection/blob/main/models/model-card.md)
 
 Project Organization
 ------------
