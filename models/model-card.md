@@ -72,9 +72,9 @@ The model baseline have especifics settings that, during the fine-tuning we chan
 
 For each one of the different hyperparameters, and evaluation of the model have ben done, generating different metrics to uderstand the performance.
 
-#### Metrics
+### Metrics
 
-##### Train
+#### Train
 
 - **Loss:** general loss metric that likely represents the overall loss of the model. It is the combination of the folowwing losses.
 
@@ -88,7 +88,7 @@ For each one of the different hyperparameters, and evaluation of the model have 
 
 - **Loss RPN box regression:** quantifies the loss for region proposal network (RPN) bounding box regression, measuring how well the model is proposing object regions.
 
-##### Test
+#### Evaluation
 - **Average recall (AR):** (for the mask and bounding boxes) evaluates how well the model detects and recalls correct ojects, measuring the proportion of the true positive predictions that the model correctly identifies.
 
 - **Average precisions (AP):** (for the mask and bounding boxes) quantifies how well the model precisely identifies and localizes objects within the image, considering both the accuracy and spatial overlap of the predictions.
