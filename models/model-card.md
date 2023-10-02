@@ -63,7 +63,7 @@ This model was constructed based on the Mask R-CNN ResNet-50 model, which was pr
 The model baseline have especifics settings that, during the fine-tuning we change it with different values:
 
 |                         | Baseline | Fine-tune  |
-|-------------------------|---------:|-----------:|
+|-------------------------|---------:|-----|-----:|
 | Size hidden layer       |   216    |  128 | 512 |
 | Batch size              |  2       | 4    | 8   |
 | Number of epochs        | 3        |      2     |
