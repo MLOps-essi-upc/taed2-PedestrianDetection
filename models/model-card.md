@@ -56,39 +56,49 @@ Al this information, and more, is witting in the [Dataset Card](https://github.c
 
 ### Training Procedure 
 
-<!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
+This model was constructed based on the Mask R-CNN ResNet-50 model, which was pretained to detect objects in the popular Coco dataset. But we have performed different experiments to choose the best model for our practice. So, we first trained using the model Mask R-CNN ResNet-50 of the shelf and then with fine-tuning, where we had to modified the architecture of the bounding box and the mask predictor. This way, during the fine-tune, we were able to change some hyperparameters to search for the best performance.
 
 #### Training Hyperparameters
 
-- **Training regime:** {{ training_regime | default("[More Information Needed]", true)}} <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
+The model baseline have especifics settings that, during the fine-tuning we change it with different values:
+
+|                         | Baseline | Fine-tune  |
+|-------------------------|---------:|-----------:|
+| Size hidden layer       |   216    |  128 | 512 |
+| Batch size              |  2       | 4    | 8   |
+| Number of epochs        | 3        |      2     |
 
 ## Evaluation
 
-<!-- This section describes the evaluation protocols and provides the results. -->
-
-### Testing Data, Factors & Metrics
-
-#### Testing Data
-
-<!-- This should link to a Data Card if possible. -->
-
-{{ testing_data | default("[More Information Needed]", true)}}
-
-#### Factors
-
-<!-- These are the things the evaluation is disaggregating by, e.g., subpopulations or domains. -->
-
-{{ testing_factors | default("[More Information Needed]", true)}}
+For each one of the different hyperparameters, and evaluation of the model have ben done, generating different metrics to uderstand the performance.
 
 #### Metrics
 
-<!-- These are the evaluation metrics being used, ideally with a description of why. -->
+- **Average recall (AR):** (for the mask and bounding boxes) evaluates how well the model detects and recalls correct ojects, measuring the proportion of the true positive predictions that the model correctly identifies.
 
-{{ testing_metrics | default("[More Information Needed]", true)}}
+- **Average precisions (AP):** (for the mask and bounding boxes) quantifies how well the model precisely identifies and localizes objects within the image, considering both the accuracy and spatial overlap of the predictions.
+
+- **Loss:** general loss metric that likely represents the overall loss of the model. It is the combination of the folowwing losses.
+
+- **Loss classifier:** measures the loss assoceiated with the classification task in the model, quantifing how well the model is classifying instances.
+
+- **Loss box regression:** loss related to the bounding box regression task, measuring how accurately the model is predicting the coordinates of object bounding boxes.
+
+- **Loss mask:** related to the quality of the predicted segmentation masks, quantifing how well the model is segmenting instances within images.
+
+- **Loss objectness:** loss associated with objectness prediction to determine whether an object is present in a specific region of an image.
+
+- **Loss RPN box regression:** quantifies the loss for region proposal network (RPN) bounding box regression, measuring how well the model is proposing object regions.
 
 ### Results
 
-{{ results | default("[More Information Needed]", true)}}
+We will be able to write this part when we are able to finish all the experiments and choose the best model in terms of AR and AP scores.
+
+So the model, having the following characterstics (model settings):
+POSAR LA MILLOR COMBINACIÓ D'HIPERPARÀMETRES VISTA
+
+Achieved the following results (model metrics of the last epoch):
+POSAR RESULTATS DEL MODEL BO
 
 ## Model Examination
 
