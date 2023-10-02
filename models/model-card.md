@@ -105,8 +105,8 @@ So the model, having the following characterstics (model settings):
 Achieved the following results (model metrics of the last epoch):
 | Metric                | Bounding box | Segmentation |
 |-----------------------|-------------:|-------------:|
-| AP                    | 0.837 (83.7%)| 0.782 (78.2%)|
-| AR                    | 0.405 (40.5%)| 0.371 (37.1%)| 
+| AP                    | 0.823 (82.3%)| 0.777 (77.7%)|
+| AR                    | 0.859 (85.9%)| 0.808 (80.8%)| 
 
 ## Model Examination
 
