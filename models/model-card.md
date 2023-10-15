@@ -13,9 +13,7 @@ More over, a ResNet architecture is implemented to overcome the vanishing gradie
 
 - **Model type:** Mask R-CNN is a deep learning model that belongs to the family of Convolutional Neural Networks (CNNs). It is specifically designed for the task of instance segmentation, which combines object detection (identifying objects and their bounding boxes) and semantic segmentation (pixel-wise object labeling, masks). 
 
-- **Language(s) (NLP):** It is typically implemented in Python using deep learning frameworks such as TensorFlow or PyTorch.
-
-- **Finetuned from model:** The model base [model base](https://pytorch.org/vision/main/models/generated/torchvision.models.detection.maskrcnn_resnet50_fpn.html) used is the one found in PyTorch.
+- **Finetuned from model:** The [model base](https://pytorch.org/vision/main/models/generated/torchvision.models.detection.maskrcnn_resnet50_fpn.html) used is the one found in PyTorch.
 
 ## Uses
 ### Direct Use
