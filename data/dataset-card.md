@@ -182,4 +182,4 @@ Rodrigo Bonferroni, Arlet Corominas and Clàudia Mur.
 
 ### Contributions
 
-Thanks to [@psvishnu-kaggle]([https://github.com/<github-username>](https://www.kaggle.com/psvishnu)https://www.kaggle.com/psvishnu) for adding this dataset.
+Thanks to [@psvishnu-kaggle](https://www.kaggle.com/psvishnu) for adding this dataset.
