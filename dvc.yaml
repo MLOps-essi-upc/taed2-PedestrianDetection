@@ -1,0 +1,8 @@
+stages:
+  download_data:
+    cmd: python -m notebooks.Data_downloading
+    deps:
+    - notebooks/Data_downloading.py
+    outs:
+    - data/raw/Dataset_FudanPed/PNGImages
+    - data/raw/Dataset_FudanPed/PedMasks/

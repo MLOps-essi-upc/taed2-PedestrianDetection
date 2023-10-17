@@ -1,0 +1,19 @@
+stages:
+  download_data:
+    cmd: python -m Data_downloading
+    deps:
+    - Data_downloading.py
+    outs:
+    - ../data/raw/Dataset_FudanPed/PNGImages
+    - ../data/raw/Dataset_FudanPed/PedMasks/
+  processing_data:
+    cmd: python -m Data_processing
+    deps:
+    - Data_processing.py
+    params:
+    - processing_data.seed
+    - processing_data.training_size
+    - processing_data.validation_size
+    - processing_data.testing_size
+    outs:
+    - ../data/processed/
