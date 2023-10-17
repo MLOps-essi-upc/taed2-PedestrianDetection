@@ -2,8 +2,7 @@ import numpy as np
 from PIL import Image
 from pedestrian_detector import detect_pedestrian
 from your_model_module import YourPedestrianDetectionModel
-from your_module import PedestrianDataset
-from src import MODELS_DIR
+from PedestrianDatasetClass import PedestrianDataset
 import pytest
 import torch
 
@@ -29,7 +28,7 @@ Canvi de raça
 
 @pytest.fixture
 def load_model():
-    return torch.load(MODELS_DIR / 'baseline.pth')
+    return torch.load('src/models/baseline.pth')
 
 
 # test for multiple inputs !! --> he de buscar les fotos
