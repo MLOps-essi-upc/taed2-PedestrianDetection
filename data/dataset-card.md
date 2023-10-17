@@ -15,8 +15,6 @@
       - [Initial Data Collection and Normalization](#initial-data-collection-and-normalization)
       - [Who are the source language producers?](#who-are-the-source-language-producers)
     - [Annotations](#annotations)
-      - [Annotation process](#annotation-process)
-      - [Who are the annotators?](#who-are-the-annotators)
     - [Personal and Sensitive Information](#personal-and-sensitive-information)
   - [Considerations for Using the Data](#considerations-for-using-the-data)
     - [Social Impact of Dataset](#social-impact-of-dataset)
@@ -24,8 +22,6 @@
     - [Other Known Limitations](#other-known-limitations)
   - [Additional Information](#additional-information)
     - [Dataset Curators](#dataset-curators)
-    - [Licensing Information](#licensing-information)
-    - [Citation Information](#citation-information)
     - [Contributions](#contributions)
 
 ## Dataset Description
@@ -186,4 +182,4 @@ Rodrigo Bonferroni, Arlet Corominas and Clàudia Mur.
 
 ### Contributions
 
-Thanks to [@github-username](https://github.com/<github-username>) for adding this dataset.
+Thanks to [@psvishnu-kaggle](https://www.kaggle.com/psvishnu) for adding this dataset.
