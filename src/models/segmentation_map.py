@@ -1,3 +1,10 @@
+"""
+Module Name: coco_utils.py
+
+This module provides utility functions for working with COCO datasets 
+and segmentation map visualization.
+"""
+
 import random
 import cv2
 import numpy as np
@@ -11,15 +18,27 @@ COCO_NAMES = ['__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airpl
               'bottle', 'N/A', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl',
               'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
               'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed', 'N/A', 'dining table',
-              'N/A', 'N/A', 'toilet', 'N/A', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
-              'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'N/A', 'book',
-              'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
+              'N/A', 'N/A', 'toilet', 'N/A', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 
+              'cell phone','microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'N/A', 
+              'book','clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
 COLORS = np.random.uniform(0, 255, size=(len(COCO_NAMES), 3)).astype(int)
 random.seed(356)
 
 
 def draw_segmentation_map(image, target, score_thres=0.8, label_thres=1):
+    """
+    Draw segmentation maps on an image based on detected objects.
+
+    Args:
+    image (Tensor): Input image as a PyTorch Tensor.
+    target (dict): The target dictionary containing segmentation masks, boxes, labels, and scores.
+    score_thres (float): The threshold for object detection scores.
+    label_thres (int): The label ID for the desired objects.
+
+    Returns:
+    ndarray: An image with segmentation maps drawn on it.
+    """
 
     # Convert back to numpy arrays
     _image = np.copy(image.cpu().detach().numpy().transpose(1, 2, 0)*255)
@@ -31,13 +50,11 @@ def draw_segmentation_map(image, target, score_thres=0.8, label_thres=1):
     else:
         _scores = np.ones(len(_masks), dtype=np.float32)
 
-    alpha = 0.3
-
     label_names = [COCO_NAMES[i] for i in _labels]
 
     # Add mask if _scores and _labels
     m = np.zeros_like(_masks[0].squeeze())
-    for i in range(len(_masks)):
+    for i, _ in enumerate(_masks):
         if _scores[i] > score_thres and _labels[i] == label_thres:
             # print(_labels[i])
             m = m + _masks[i]
@@ -52,7 +69,7 @@ def draw_segmentation_map(image, target, score_thres=0.8, label_thres=1):
     _image = cv2.cvtColor(_image, cv2.COLOR_RGB2BGR)
     _image = cv2.cvtColor(_image, cv2.COLOR_BGR2RGB)
 
-    for i in range(len(_masks)):
+    for i, _ in enumerate(_masks):
         if _scores[i] > score_thres and _labels[i] == label_thres:
             # apply a random color to each object
             color = COLORS[random.randrange(0, len(COLORS))].tolist()
