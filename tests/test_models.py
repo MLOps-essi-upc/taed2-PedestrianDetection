@@ -1,74 +1,53 @@
-import numpy as np
 from PIL import Image
-from pedestrian_detector import detect_pedestrian
-from your_model_module import YourPedestrianDetectionModel
-from PedestrianDatasetClass import PedestrianDataset
 import pytest
 import torch
-
-"""
-Generar un nou notebook o fitxer, carregar el model i fer els testos(Pytest).
-
-TESTOS:
-
-Precisió → si està per sota del 70 % error
-
-Mirar bona prediccio?
-Si hi ha oclusions
-
-Canvis de llum(fosc, clar)
-
-Postura dels vianants(terra, cadira de rodes, nens)
-
-Canvi de raça
-"""
+import pickle
+import numpy as np
+import os
 
 # Load the model from models directory
 
 
-@pytest.fixture
-def load_model():
-    return torch.load('src/models/baseline.pth')
+# Directory where test images and expected output files are located
+test_images_dir = "tests/img_test"
+
+# Discover all files in the test directory
+all_files = os.listdir(test_images_dir)
+
+# Filter image and expected output file pairs
+image_files = [f for f in all_files if f.endswith(".jpeg")]
+expected_output_files = [f for f in all_files if f.endswith(".pkl")]
+
+# Use the fixture in the test parameterization
 
 
-# test for multiple inputs !! --> he de buscar les fotos
-# segurament els hi hagi de fer algo a les fotos pq tinguin l'estructura que cal
 @pytest.mark.parametrize(
-    "input, expected",
-    [
-        ([[6.4, 2.8, 5.6, 2.1]], 2),
-        ([[5.0, 2.3, 3.3, 1.0]], 1),
-        ([[4.9, 2.5, 4.5, 1.7]], 2),
-    ],
+    "image_path, target_path",
+    [(image_file, os.path.splitext(image_file)[0] + ".pkl") for image_file in image_files],
 )
-"""
-predictions = {
-    'boxes': torch.tensor([[x1, y1, x2, y2], [x1, y1, x2, y2], ...]),  # Bounding boxes
-    'labels': torch.tensor([label1, label2, ...]),  # Class labels
-    'scores': torch.tensor([score1, score2, ...]),  # Confidence scores
-    'masks': torch.tensor([mask1, mask2, ...]),  # Pixel-wise masks
-}
-"""
+@pytest.fixture
+def model():
+    return torch.load('models/baseline.pth', map_location=torch.device('cpu'))
 
 
-def correct_input(Image):
+def correct_input(image_path):
     # Load the image
     image = Image.open(image_path)
 
     # Resize the image to the model's expected size
-    image = image.resize((800, 800))
+    # image = image.resize((800, 800))
 
     # Convert to RGB format
     image = image.convert("RGB")
 
     # Normalize pixel values (assuming mean and std values)
-    mean = [0.485, 0.456, 0.406]
-    std = [0.229, 0.224, 0.225]
-    image = np.array(image) / 255.0  # Scale to [0, 1]
-    image = (image - mean) / std  # Normalize
+    # mean = [0.485, 0.456, 0.406]
+    # std = [0.229, 0.224, 0.225]
+    # image = np.array(image) / 255.0  # Scale to [0, 1]
+    # image = (image - mean) / std  # Normalize
 
     # Convert to a NumPy array
-    image = np.expand_dims(image, axis=0)  # Create a batch of one
+    # image = np.expand_dims(image, axis=0)  # Create a batch of one
 
     # Now 'image' is ready for input to the Mask R-CNN ResNet-50 model
     return image
@@ -76,9 +55,11 @@ def correct_input(Image):
 # Check the prediction is correct
 
 
-def test_model_performance(model, image_path, target):
-    # Load the image
+def test_model_performance(model, image_path, target_path):
+    # Load the image and target
     image = correct_input(image_path)
+    with open(target_path, 'rb') as file:
+        target = pickle.load(file)
 
     # Get model predictions for the input image
     predictions = model(image)
@@ -141,53 +122,53 @@ def test_pedestrian_detection_negative(model, image_path):
     assert no_pedestrian_detection, "A pedestrian detection is present when it should be negative"
 
 
-# Test model precision --> NO ESTIC SEGURA
-def calculate_precision(predictions, ground_truth):
-    # Define true positives (TP) and false positives (FP)
-    TP = 0
-    FP = 0
-
-    # Define a confidence score threshold for detections
-    confidence_threshold = 0.7
-
-    for prediction, annotation in zip(predictions, ground_truth):
-        # Compare the class labels (assuming 1 for pedestrians)
-        if prediction['label'] == 1:
-            # Check if the prediction is above the confidence threshold
-            if prediction['score'] >= confidence_threshold:
-                # Check if there is a corresponding pedestrian in the ground truth
-                if annotation['label'] == 1:
-                    TP += 1  # True Positive
-                else:
-                    FP += 1  # False Positive
-
-    # Calculate precision
-    if TP + FP == 0:
-        precision = 1.0  # If there are no predictions
-    else:
-        precision = TP / (TP + FP)
-
-    return precision
-
-# cOM PASSO DATASET??
-
-
-def test_precision(model, dataset):
-    # Create lists to store model predictions and ground truth annotations
-    predictions = []
-    ground_truth = []
-
-    # Process each image in the dataset
-    for image, annotation in dataset:
-        model_output = model(image)
-        predictions.append(model_output)
-        ground_truth.append(annotation)
-
-    # Calculate precision
-    precision = calculate_precision(predictions, ground_truth)
-
-    # Check if precision is greater than or equal to a threshold (e.g., 0.7)
-    assert precision >= 0.7, f"Model precision is below the threshold: {precision}"
+# # Test model precision --> NO ESTIC SEGURA
+# def calculate_precision(predictions, ground_truth):
+#     # Define true positives (TP) and false positives (FP)
+#     TP = 0
+#     FP = 0
+#
+#     # Define a confidence score threshold for detections
+#     confidence_threshold = 0.7
+#
+#     for prediction, annotation in zip(predictions, ground_truth):
+#         # Compare the class labels (assuming 1 for pedestrians)
+#         if prediction['label'] == 1:
+#             # Check if the prediction is above the confidence threshold
+#             if prediction['score'] >= confidence_threshold:
+#                 # Check if there is a corresponding pedestrian in the ground truth
+#                 if annotation['label'] == 1:
+#                     TP += 1  # True Positive
+#                 else:
+#                     FP += 1  # False Positive
+#
+#     # Calculate precision
+#     if TP + FP == 0:
+#         precision = 1.0  # If there are no predictions
+#     else:
+#         precision = TP / (TP + FP)
+#
+#     return precision
+#
+# # cOM PASSO DATASET??
+#
+#
+# def test_precision(model, dataset):
+#     # Create lists to store model predictions and ground truth annotations
+#     predictions = []
+#     ground_truth = []
+#
+#     # Process each image in the dataset
+#     for image, annotation in dataset:
+#         model_output = model(image)
+#         predictions.append(model_output)
+#         ground_truth.append(annotation)
+#
+#     # Calculate precision
+#     precision = calculate_precision(predictions, ground_truth)
+#
+#     # Check if precision is greater than or equal to a threshold (e.g., 0.7)
+#     assert precision >= 0.7, f"Model precision is below the threshold: {precision}"
 
 
 # To run the tests
