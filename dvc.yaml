@@ -1,8 +1,19 @@
 stages:
   download_data:
-    cmd: python -m notebooks.Data_downloading
+    cmd: python ./src/features/data_downloading.py
     deps:
-    - notebooks/Data_downloading.py
+    - ./src/features/data_downloading.py
     outs:
-    - data/raw/Dataset_FudanPed/PNGImages
-    - data/raw/Dataset_FudanPed/PedMasks/
+    - ./data/raw/Dataset_FudanPed/PNGImages
+    - ./data/raw/Dataset_FudanPed/PedMasks/
+  preprocessing_data:
+    cmd: python ./src/features/data_preprocessing.py
+    deps:
+    - ./src/features/data_preprocessing.py
+    params:
+    - preprocessing_data.seed
+    - preprocessing_data.training_size
+    - preprocessing_data.validation_size
+    - preprocessing_data.testing_size
+    outs:
+    - ./data/processed/

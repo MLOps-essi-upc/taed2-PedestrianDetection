@@ -1,22 +1,43 @@
+"""
+Module Name: pedestrian_dataset_class.py
+
+This module defines the PedestrianDataset class, which is used to create a custom 
+dataset for pedestrian detection tasks.
+"""
+
 import os
-import numpy as np
 import random
+import numpy as np
 
 import torch
 import torch.utils.data
-
-from torchvision import transforms
-from torchvision import utils as tutils
-
-
-import skimage.transform as sktf
-import skimage.io as skio
 
 from PIL import Image
 
 random.seed(356)
 
 class PedestrianDataset(torch.utils.data.Dataset):
+    """
+    A custom PyTorch dataset class for pedestrian detection.
+
+    Args:
+    root (str): The root directory containing the dataset.
+    transforms (callable, optional): A function/transform to apply to the data.
+
+    Attributes:
+    root (str): The root directory of the dataset.
+    transforms (callable, optional): The data transformation function.
+    imgs (list): A list of image file names.
+    masks (list): A list of mask file names.
+
+    Methods:
+    __getitem__(self, idx): Retrieve an item from the dataset.
+    __len__(self): Get the length of the dataset.
+
+    This dataset loads images and their corresponding masks and annotations, and provides them 
+    as input data for pedestrian detection tasks.
+    """
+
     def __init__(self, root, transforms=None):
         self.root = root
         self.transforms = transforms
@@ -29,7 +50,8 @@ class PedestrianDataset(torch.utils.data.Dataset):
         img_path = os.path.join(self.root, "PNGImages", self.imgs[idx])
         mask_path = os.path.join(self.root, "PedMasks", self.masks[idx])
         img = Image.open(img_path).convert("RGB")
-        # The mask is not converted to RGB given that each color corresponds to an object, the background being 0
+        # The mask is not converted to RGB given that each color corresponds to an object,
+        # the background being 0
         mask = Image.open(mask_path)
 
         mask = np.array(mask)
@@ -77,3 +99,4 @@ class PedestrianDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.imgs)
+    

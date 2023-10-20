@@ -1,20 +1,33 @@
+"""
+Module name: validate.py
+
+This module defines the code used to validate the data used in the project.
+The data will be validated using Great Expectations.
+"""
+import os
+import pickle
+
 import great_expectations as gx
 import pandas as pd
-import pickle
+
+# from src import ROOT_DIR
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
+
+# Add to root_dir the path to the processed data folder
+data_dir = os.path.join(root_dir, 'data/processed')
 
 context = gx.get_context()
 context.add_or_update_expectation_suite("pennfudan_training_suite")
 datasource = context.sources.add_or_update_pandas(name="pennfudan_dataset")
 
 # Using this code we load each dataset from their respective file.
-
-with open('../../data/processed/training_dataset.pkl', 'rb') as file:
+with open(os.path.join(data_dir, 'training_dataset.pkl'), 'rb') as file:
     training_dataset = pickle.load(file)
     file.close()
-with open('../../data/processed/validation_dataset.pkl', 'rb') as file:
+with open(os.path.join(data_dir, 'validation_dataset.pkl'), 'rb') as file:
     validation_dataset = pickle.load(file)
     file.close()
-with open('../../data/processed/testing_dataset.pkl', 'rb') as file:
+with open(os.path.join(data_dir, 'testing_dataset.pkl'), 'rb') as file:
     testing_dataset = pickle.load(file)
     file.close()
 
@@ -92,5 +105,3 @@ checkpoint = context.add_or_update_checkpoint(
 
 checkpoint_result = checkpoint.run()
 context.view_validation_result(checkpoint_result)
-
-
