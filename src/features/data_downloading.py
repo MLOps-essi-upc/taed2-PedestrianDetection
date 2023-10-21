@@ -14,6 +14,8 @@ def main():
     """
     This code will download the dataset from Kaggle and unzip it in the established folders.
     If the dataset is already in /raw, it will delete it and substitute the data.
+    For the kaggle dataset to be downloaded it is necessary to have a kaggle.json file inside 
+    a .kaggle folder in the home directory.
     """
 
     # Download the dataset from Kaggle

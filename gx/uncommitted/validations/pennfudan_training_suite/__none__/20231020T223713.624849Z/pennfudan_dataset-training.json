@@ -1,0 +1,304 @@
+{
+  "evaluation_parameters": {},
+  "meta": {
+    "active_batch_definition": {
+      "batch_identifiers": {},
+      "data_asset_name": "training",
+      "data_connector_name": "fluent",
+      "datasource_name": "pennfudan_dataset"
+    },
+    "batch_markers": {
+      "ge_load_time": "20231020T223713.631369Z",
+      "pandas_data_fingerprint": "6a7c0f7e6a7ea8fe391cf5740535c8fb"
+    },
+    "batch_spec": {
+      "batch_data": "PandasDataFrame"
+    },
+    "checkpoint_id": null,
+    "checkpoint_name": "my_checkpoint",
+    "expectation_suite_name": "pennfudan_training_suite",
+    "great_expectations_version": "0.17.22",
+    "run_id": {
+      "run_name": null,
+      "run_time": "2023-10-21T00:37:13.624849+02:00"
+    },
+    "validation_id": null,
+    "validation_time": "20231020T223713.638370Z"
+  },
+  "results": [
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_table_columns_to_match_ordered_list",
+        "kwargs": {
+          "batch_id": "pennfudan_dataset-training",
+          "column_list": [
+            "Tensor",
+            "Boxes",
+            "Labels",
+            "Masks",
+            "Image_id",
+            "Area",
+            "Iscrowd"
+          ]
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "observed_value": [
+          "Tensor",
+          "Boxes",
+          "Labels",
+          "Masks",
+          "Image_id",
+          "Area",
+          "Iscrowd"
+        ]
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_unique",
+        "kwargs": {
+          "batch_id": "pennfudan_dataset-training",
+          "column": "Tensor"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 280,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "unexpected_percent_total": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "pennfudan_dataset-training",
+          "column": "Tensor"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 280,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_unique",
+        "kwargs": {
+          "batch_id": "pennfudan_dataset-training",
+          "column": "Image_id"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 280,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [
+          {
+            "count": 1,
+            "value": 6
+          },
+          {
+            "count": 1,
+            "value": 8
+          },
+          {
+            "count": 1,
+            "value": 28
+          },
+          {
+            "count": 1,
+            "value": 34
+          },
+          {
+            "count": 1,
+            "value": 36
+          },
+          {
+            "count": 1,
+            "value": 44
+          },
+          {
+            "count": 1,
+            "value": 58
+          },
+          {
+            "count": 1,
+            "value": 70
+          },
+          {
+            "count": 1,
+            "value": 73
+          },
+          {
+            "count": 1,
+            "value": 74
+          },
+          {
+            "count": 1,
+            "value": 87
+          },
+          {
+            "count": 1,
+            "value": 94
+          },
+          {
+            "count": 1,
+            "value": 101
+          },
+          {
+            "count": 1,
+            "value": 102
+          },
+          {
+            "count": 1,
+            "value": 129
+          },
+          {
+            "count": 1,
+            "value": 132
+          },
+          {
+            "count": 1,
+            "value": 141
+          },
+          {
+            "count": 1,
+            "value": 143
+          },
+          {
+            "count": 1,
+            "value": 144
+          },
+          {
+            "count": 1,
+            "value": 157
+          }
+        ],
+        "partial_unexpected_index_list": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "partial_unexpected_list": [
+          132,
+          87,
+          6,
+          36,
+          94,
+          70,
+          58,
+          157,
+          102,
+          44,
+          28,
+          144,
+          74,
+          143,
+          101,
+          8,
+          141,
+          129,
+          73,
+          34
+        ],
+        "unexpected_count": 280,
+        "unexpected_percent": 100.0,
+        "unexpected_percent_nonmissing": 100.0,
+        "unexpected_percent_total": 100.0
+      },
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "pennfudan_dataset-training",
+          "column": "Image_id"
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "element_count": 280,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": [],
+        "partial_unexpected_list": [],
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      },
+      "success": true
+    }
+  ],
+  "statistics": {
+    "evaluated_expectations": 5,
+    "success_percent": 80.0,
+    "successful_expectations": 4,
+    "unsuccessful_expectations": 1
+  },
+  "success": false
+}

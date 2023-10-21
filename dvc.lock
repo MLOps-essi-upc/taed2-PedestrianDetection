@@ -5,8 +5,8 @@ stages:
     deps:
     - path: ./src/features/data_downloading.py
       hash: md5
-      md5: 1b05c62cac8820216a6c6dbd2cb72c44
-      size: 3029
+      md5: 4de058654bd4653f4aff65c643b73d70
+      size: 3170
     outs:
     - path: ./data/raw/Dataset_FudanPed/PNGImages
       hash: md5
