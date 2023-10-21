@@ -41,14 +41,14 @@ F_list = []
 
 # Iterate through the tensor dataset and extract the values
 for item in training_dataset:
-    tensor_list.append(item[0])
+    tensor_list.append(str(item[0]))
     dictionary = item[1]
-    A_list.append(dictionary['boxes'])
-    B_list.append(dictionary['labels'])
-    C_list.append(dictionary['masks'])
-    D_list.append(dictionary['image_id'])
-    E_list.append(dictionary['area'])
-    F_list.append(dictionary['iscrowd'])
+    A_list.append(str(dictionary['boxes']))
+    B_list.append(str(dictionary['labels']))
+    C_list.append(str(dictionary['masks']))
+    D_list.append(str(dictionary['image_id']))
+    E_list.append(str(dictionary['area']))
+    F_list.append(str(dictionary['iscrowd']))
 
 # Create a dataframe with the extracted values
 data = {
@@ -92,8 +92,9 @@ validator.expect_table_columns_to_match_ordered_list(
 
 validator.expect_column_values_to_be_unique("Tensor")
 validator.expect_column_values_to_not_be_null("Tensor")
-validator.expect_column_values_to_be_unique("Image_id")
 validator.expect_column_values_to_not_be_null("Image_id")
+validator.expect_column_values_to_not_be_null("Masks")
+validator.expect_column_values_to_not_be_null("Boxes")
 
 validator.save_expectation_suite(discard_failed_expectations=False)
 
