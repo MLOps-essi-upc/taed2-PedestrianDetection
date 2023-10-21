@@ -1,6 +1,6 @@
 
-#[tool.coverage.run]
-#omit = ["src/prepare.py", "src/evaluate.py", "src/train.py", "src/train_api_demo_models.py"]
+[tool.coverage.run]
+omit = ["src/models/data.py", "src/models/modelling.py", "src/models/segmentation_map.py", "src/features/built_features.py"]
 
 [tool.pytest.ini_options]
 testpaths = "tests"
