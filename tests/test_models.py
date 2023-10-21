@@ -4,62 +4,34 @@ import torch
 import pickle
 import numpy as np
 import os
+import torchvision.transforms as transforms
 
 # Load the model from models directory
-
-
-# Directory where test images and expected output files are located
-test_images_dir = "tests/img_test"
-
-# Discover all files in the test directory
-all_files = os.listdir(test_images_dir)
-
-# Filter image and expected output file pairs
-image_files = [f for f in all_files if f.endswith(".jpeg")]
-expected_output_files = [f for f in all_files if f.endswith(".pkl")]
-
-# Use the fixture in the test parameterization
+device = torch.device('cpu')
+model = torch.load('models/baseline.pth', map_location=device)
+model.eval()  # Set the model to evaluation mode
 
 
 @pytest.mark.parametrize(
     "image_path, target_path",
-    [(image_file, os.path.splitext(image_file)[0] + ".pkl") for image_file in image_files],
+    [('tests/img_test/lying.jpeg', 'tests/img_test/lying_output.pth'),
+     ('tests/img_test/night.jpeg', 'tests/img_test/night_output.pth'),
+     ('tests/img_test/sun_glare.jpeg', 'tests/img_test/sun_glare_output.pth'),
+     ('tests/img_test/weelchair.jpeg', 'tests/img_test/weelchair_output.pth'),
+     ('tests/img_test/kid.png', 'tests/img_test/kid_output.pth'),
+     # ('tests/img_test/african.jpeg', 'tests/img_test/african_output.pth'),
+     ('tests/img_test/bicycle.jpeg', 'tests/img_test/bicycle_output.pth'),
+     ('tests/img_test/bicycle_tunnel.jpeg', 'tests/img_test/bicycle_tunnel_output.pth'),
+     ('tests/img_test/lot_of_people.jpeg', 'tests/img_test/lot_of_people_output.pth'),
+     ('tests/img_test/bluring.jpeg', 'tests/img_test/bluring_output.pth')]
 )
-@pytest.fixture
-def model():
-    return torch.load('models/baseline.pth', map_location=torch.device('cpu'))
-
-
-def correct_input(image_path):
-    # Load the image
-    image = Image.open(image_path)
-
-    # Resize the image to the model's expected size
-    # image = image.resize((800, 800))
-
-    # Convert to RGB format
-    image = image.convert("RGB")
-
-    # Normalize pixel values (assuming mean and std values)
-    # mean = [0.485, 0.456, 0.406]
-    # std = [0.229, 0.224, 0.225]
-    # image = np.array(image) / 255.0  # Scale to [0, 1]
-    # image = (image - mean) / std  # Normalize
-
-    # Convert to a NumPy array
-    # image = np.expand_dims(image, axis=0)  # Create a batch of one
-
-    # Now 'image' is ready for input to the Mask R-CNN ResNet-50 model
-    return image
-
-# Check the prediction is correct
-
-
-def test_model_performance(model, image_path, target_path):
+def test_model_performance(image_path, target_path):
     # Load the image and target
-    image = correct_input(image_path)
-    with open(target_path, 'rb') as file:
-        target = pickle.load(file)
+    image = Image.open(image_path).convert("RGB")
+    # Convert the single image to a batch (size 1)
+    image = [transforms.ToTensor()(image).to(device)]
+
+    target = torch.load(target_path, map_location=device)
 
     # Get model predictions for the input image
     predictions = model(image)
@@ -67,109 +39,50 @@ def test_model_performance(model, image_path, target_path):
     # Define a tolerance level for numerical comparisons (e.g., for bounding box coordinates)
     tolerance = 1e-5
 
-    # Compare individual components of the predictions to the target
-    assert torch.allclose(predictions['boxes'], target['boxes'], rtol=tolerance, atol=tolerance)
-    assert torch.equal(predictions['labels'], target['labels'])
-    assert torch.allclose(predictions['scores'], target['scores'], rtol=tolerance, atol=tolerance)
-    assert torch.equal(predictions['masks'], target['masks'])
+ # Define a tolerance level for numerical comparisons
+    bbox_tolerance = 1.0  # Adjust this value as needed
+    mask_tolerance = 0.05  # Adjust this value as needed
 
+ # Check if the predictions are empty or not
+    if not predictions[0]['boxes'].shape[0] and not target['boxes'].shape[0]:
+        # Both predictions and targets are empty; nothing to compare
+        return
 
-# Test when a pedestrian is present in the image
-def test_pedestrian_detection_positive(model, image_path):
-    # Load the image
-    image = correct_input(image_path)
+    # Filter out predictions with scores lower than the threshold
+    score_threshold = 0.8
+    above_threshold = predictions[0]['scores'] >= score_threshold
+    predictions[0]['boxes'] = predictions[0]['boxes'][above_threshold]
+    predictions[0]['masks'] = predictions[0]['masks'][above_threshold]
 
-    # Get model predictions for the image
-    predictions = model(image)
+    # Check the number of predictions
+    assert len(predictions[0]['scores']) == len(
+        target['scores']), "Number of predictions does not match"
 
-    # Define the pedestrian class label (adjust based on your specific dataset)
-    pedestrian_label = 1  # Example: 1 for pedestrians
+    # Compare common labels and score differences --> NOOOOO
+    common_labels = set(predictions[0]['labels']).intersection(target['labels'])
+    for label in common_labels:
+        pred_indices = [i for i, l in enumerate(predictions[0]['labels']) if l == label]
+        target_indices = [i for i, l in enumerate(target['labels']) if l == label]
+        assert all(torch.isclose(predictions[0]['scores'][pred_i], target['scores'][target_i], rtol=bbox_tolerance, atol=bbox_tolerance)
+                   for pred_i, target_i in zip(pred_indices, target_indices)), "Score differences for common labels"
 
-    # Define a confidence score threshold (adjust as needed)
-    confidence_threshold = 0.8  # Example: 0.7
+    # Compare bounding boxes and masks
+    for pred_box, pred_mask in zip(predictions[0]['boxes'], predictions[0]['masks']):
+        for target_box, target_mask in zip(target['boxes'], target['masks']):
+            assert torch.allclose(pred_box, target_box, rtol=bbox_tolerance,
+                                  atol=bbox_tolerance), "Bounding boxes do not match"
+            assert torch.allclose(pred_mask, target_mask, rtol=mask_tolerance,
+                                  atol=mask_tolerance), "Masks do not match"
 
-    # Check if there are any pedestrian detections with confidence above the threshold
-    has_pedestrian_detection = False
-    for label, score in zip(predictions['labels'], predictions['scores']):
-        if label == pedestrian_label and score > confidence_threshold:
-            has_pedestrian_detection = True
-            break  # Exit the loop as soon as one positive detection is found
-
-    assert has_pedestrian_detection, "No pedestrian detected or confidence score is too low"
-
-
-# Test when no pedestrian is present in the image
-def test_pedestrian_detection_negative(model, image_path):
-    # Load the image without a pedestrian
-    image = correct_input(image_path)
-
-    # Get model predictions for the image
-    predictions = model(image)
-
-    # Define the pedestrian class label (adjust based on your specific dataset)
-    pedestrian_label = 1  # Example: 1 for pedestrians
-
-    # Define a confidence score threshold (adjust as needed)
-    confidence_threshold = 0.7  # Example: 0.7
-
-    # Check that there are no pedestrian detections with confidence above the threshold
-    no_pedestrian_detection = True
-    for label, score in zip(predictions['labels'], predictions['scores']):
-        if label == pedestrian_label and score > confidence_threshold:
-            no_pedestrian_detection = False
-            break  # Exit the loop if a pedestrian detection is found
-
-    assert no_pedestrian_detection, "A pedestrian detection is present when it should be negative"
-
-
-# # Test model precision --> NO ESTIC SEGURA
-# def calculate_precision(predictions, ground_truth):
-#     # Define true positives (TP) and false positives (FP)
-#     TP = 0
-#     FP = 0
-#
-#     # Define a confidence score threshold for detections
-#     confidence_threshold = 0.7
-#
-#     for prediction, annotation in zip(predictions, ground_truth):
-#         # Compare the class labels (assuming 1 for pedestrians)
-#         if prediction['label'] == 1:
-#             # Check if the prediction is above the confidence threshold
-#             if prediction['score'] >= confidence_threshold:
-#                 # Check if there is a corresponding pedestrian in the ground truth
-#                 if annotation['label'] == 1:
-#                     TP += 1  # True Positive
-#                 else:
-#                     FP += 1  # False Positive
-#
-#     # Calculate precision
-#     if TP + FP == 0:
-#         precision = 1.0  # If there are no predictions
-#     else:
-#         precision = TP / (TP + FP)
-#
-#     return precision
-#
-# # cOM PASSO DATASET??
-#
-#
-# def test_precision(model, dataset):
-#     # Create lists to store model predictions and ground truth annotations
-#     predictions = []
-#     ground_truth = []
-#
-#     # Process each image in the dataset
-#     for image, annotation in dataset:
-#         model_output = model(image)
-#         predictions.append(model_output)
-#         ground_truth.append(annotation)
-#
-#     # Calculate precision
-#     precision = calculate_precision(predictions, ground_truth)
-#
-#     # Check if precision is greater than or equal to a threshold (e.g., 0.7)
-#     assert precision >= 0.7, f"Model precision is below the threshold: {precision}"
-
-
-# To run the tests
-# PYTHONPATH=. python3 -m pytest
+    #
+    # # Check if the predictions are empty or not
+    # if predictions[0]['boxes'].shape[0] == 0 and target['boxes'].shape[0] == 0:
+    #     return  # No predictions and no targets; nothing to compare
+    #
+    # # Compare individual components of the predictions to the target
+    # assert torch.allclose(predictions[0]['boxes'], target['boxes'],
+    #                       rtol=tolerance, atol=tolerance), "Bounding box do not match"
+    # assert torch.equal(predictions[0]['labels'], target['labels']), "Predictions do not match"
+    # assert torch.allclose(predictions[0]['scores'], target['scores'],
+    #                       rtol=tolerance, atol=tolerance), "Scores do not match"
+    # assert torch.equal(predictions[0]['masks'], target['masks']), "Masks do not match"

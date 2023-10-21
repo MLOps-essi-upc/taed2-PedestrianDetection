@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="3" failures="0" skipped="0" tests="3" time="2.306" timestamp="2023-10-21T16:22:17.087836" hostname="MacBook-Pro-de-Claudia.local"><testcase classname="" name="test_models" time="0.000"><error message="collection failure">/usr/local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call
+    result: Optional[TResult] = func()
+/usr/local/lib/python3.10/site-packages/_pytest/runner.py:372: in &lt;lambda&gt;
+    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:531: in collect
+    self._inject_setup_module_fixture()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture
+    self.obj, ("setUpModule", "setup_module")
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:310: in obj
+    self._obj = obj = self._getobj()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj
+    return self._importtestmodule()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+/usr/local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
+    ???
+/usr/local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+test_models.py:9: in &lt;module&gt;
+    model = torch.load('models/baseline.pth', map_location=torch.device('cpu'))
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:791: in load
+    with _open_file_like(f, 'rb') as opened_file:
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:271: in _open_file_like
+    return _open_file(name_or_buffer, mode)
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:252: in __init__
+    super().__init__(open(name, mode))
+E   FileNotFoundError: [Errno 2] No such file or directory: 'models/baseline.pth'</error></testcase><testcase classname="" name="test_negative_det" time="0.000"><error message="collection failure">/usr/local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call
+    result: Optional[TResult] = func()
+/usr/local/lib/python3.10/site-packages/_pytest/runner.py:372: in &lt;lambda&gt;
+    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:531: in collect
+    self._inject_setup_module_fixture()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture
+    self.obj, ("setUpModule", "setup_module")
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:310: in obj
+    self._obj = obj = self._getobj()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj
+    return self._importtestmodule()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+/usr/local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
+    ???
+/usr/local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+test_negative_det.py:9: in &lt;module&gt;
+    model = torch.load('models/baseline.pth', map_location=torch.device('cpu'))
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:791: in load
+    with _open_file_like(f, 'rb') as opened_file:
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:271: in _open_file_like
+    return _open_file(name_or_buffer, mode)
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:252: in __init__
+    super().__init__(open(name, mode))
+E   FileNotFoundError: [Errno 2] No such file or directory: 'models/baseline.pth'</error></testcase><testcase classname="" name="test_positive_det" time="0.000"><error message="collection failure">/usr/local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call
+    result: Optional[TResult] = func()
+/usr/local/lib/python3.10/site-packages/_pytest/runner.py:372: in &lt;lambda&gt;
+    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:531: in collect
+    self._inject_setup_module_fixture()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture
+    self.obj, ("setUpModule", "setup_module")
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:310: in obj
+    self._obj = obj = self._getobj()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj
+    return self._importtestmodule()
+/usr/local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+/usr/local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
+    ???
+/usr/local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+test_positive_det.py:9: in &lt;module&gt;
+    model = torch.load('models/baseline.pth', map_location=torch.device('cpu'))
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:791: in load
+    with _open_file_like(f, 'rb') as opened_file:
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:271: in _open_file_like
+    return _open_file(name_or_buffer, mode)
+/usr/local/lib/python3.10/site-packages/torch/serialization.py:252: in __init__
+    super().__init__(open(name, mode))
+E   FileNotFoundError: [Errno 2] No such file or directory: 'models/baseline.pth'</error></testcase></testsuite></testsuites>
