@@ -19,7 +19,7 @@ model.eval()  # Set the model to evaluation mode
      ('tests/img_test/sun_glare.jpeg', 'tests/img_test/sun_glare_output.pth'),
      ('tests/img_test/weelchair.jpeg', 'tests/img_test/weelchair_output.pth'),
      ('tests/img_test/kid.png', 'tests/img_test/kid_output.pth'),
-     # ('tests/img_test/african.jpeg', 'tests/img_test/african_output.pth'),
+     ('tests/img_test/african.jpeg', 'tests/img_test/african_output.pth'),
      ('tests/img_test/bicycle.jpeg', 'tests/img_test/bicycle_output.pth'),
      ('tests/img_test/bicycle_tunnel.jpeg', 'tests/img_test/bicycle_tunnel_output.pth'),
      ('tests/img_test/lot_of_people.jpeg', 'tests/img_test/lot_of_people_output.pth'),
