@@ -21,19 +21,29 @@ stages:
   preprocessing_data:
     cmd: python ./src/features/data_preprocessing.py
     deps:
+    - path: ./data/raw/Dataset_FudanPed/PNGImages
+      hash: md5
+      md5: 67061f15dfc0e1ffdeb8ff12bdefd690.dir
+      size: 53234523
+      nfiles: 170
+    - path: ./data/raw/Dataset_FudanPed/PedMasks/
+      hash: md5
+      md5: c8cb959f7d9979777c05034a4b57e704.dir
+      size: 429920
+      nfiles: 170
     - path: ./src/features/data_preprocessing.py
       hash: md5
       md5: 8d835d657e04b3e59c8a52fdbca06184
       size: 5052
     params:
       params.yaml:
-        preprocessing_data.seed: 42
+        preprocessing_data.seed: 44
         preprocessing_data.testing_size: 0.295
         preprocessing_data.training_size: 0.41
         preprocessing_data.validation_size: 0.295
     outs:
     - path: ./data/processed/
       hash: md5
-      md5: 361376e05ea20edcda5a2cee8342ca2a.dir
+      md5: 3ab61b1a140a4ff94086de58634e3f3e.dir
       size: 50692
       nfiles: 3
