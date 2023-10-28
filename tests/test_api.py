@@ -1,4 +1,3 @@
-from src.app.api import app  # Import your FastAPI app
 import io
 import pytest
 from fastapi.testclient import TestClient
@@ -6,7 +5,10 @@ from PIL import Image
 import numpy as np
 import sys
 import os
-from src.app.api import app
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+sys.path.insert(1, os.path.join(root_dir, 'src/app'))
+from api import app
 
 
 # Initialize the test client
