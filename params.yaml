@@ -1,0 +1,5 @@
+preprocessing_data:
+  seed: 42
+  training_size: 0.41
+  validation_size: 0.295
+  testing_size: 0.295

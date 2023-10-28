@@ -1,0 +1,5 @@
+outs:
+- md5: 7963a9516624dfb14ed94ada1801a098
+  size: 176258699
+  hash: md5
+  path: baseline.pth

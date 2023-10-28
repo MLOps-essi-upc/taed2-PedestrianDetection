@@ -13,7 +13,6 @@ from functools import wraps
 from datetime import datetime
 from src.app.draw_segmentation_map import draw_segmentation_map
 from src.app.draw_mask import draw_mask
-
 import os
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
