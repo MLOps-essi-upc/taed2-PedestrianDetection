@@ -13,6 +13,8 @@ import os
 import getpass
 from src.features.engine import train_one_epoch, evaluate
 from src.models.modelling import evaluation_mflow, train_mlflow
+import configparser
+
 
 
 # Parameters (in params.yaml)
@@ -28,9 +30,11 @@ training_dataset, validation_dataset, _ = load_data(DATA_FOLDER)
 
 
 # Set environment variables
-password = getpass.getpass(prompt='Enter your password: ')  # potser que estingui en un fitxer ocult
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/RodrigoBonferroni/taed2-PedestrianDetection.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "claudiamur"
+config = configparser.ConfigParser()
+config.read('config.ini')
+password = config['Credentials']['mlflow_password']
 os.environ["MLFLOW_TRACKING_PASSWORD"] = password
 mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
 
