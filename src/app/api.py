@@ -11,8 +11,8 @@ import torch
 from http import HTTPStatus
 from functools import wraps
 from datetime import datetime
-from draw_segmentation_map import draw_segmentation_map
-from draw_mask import draw_mask
+from src.app.draw_segmentation_map import draw_segmentation_map
+from src.app.draw_mask import draw_mask
 
 import os
 
