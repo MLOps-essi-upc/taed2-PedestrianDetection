@@ -11,12 +11,11 @@ import torch
 from http import HTTPStatus
 from functools import wraps
 from datetime import datetime
-from src.app.draw_segmentation_map import draw_segmentation_map
-from src.app.draw_mask import draw_mask
+from draw_segmentation_map import draw_segmentation_map
+from draw_mask import draw_mask
 import os
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
-print(root_dir)
 model_path = os.path.join(root_dir, "models/baseline.pth")
 
 # Define application
@@ -28,12 +27,14 @@ app = FastAPI(
 
 """Function to detect pedestrians in an image"""
 
-
 def detect_pedestrians(img, score_thres: float):
 
     # Make predictions for the image
     with torch.no_grad():
         output = app.state.model([img])[0]  # expects a list of RGB imgs and returns a list
+
+    if output['labels'].size() == torch.Size([0]):
+        return output
 
     # Filter predictions based on score and label thresholds
     indices_to_keep = torch.nonzero(
@@ -192,7 +193,7 @@ def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
 
 
 @app.post("/masks", tags=["mask"])
-def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
+def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
     try:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
