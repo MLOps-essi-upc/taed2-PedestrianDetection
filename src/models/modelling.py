@@ -5,7 +5,7 @@ This module provides utility functions for training and evaluating models with M
 """
 
 import torch
-from engine import train_one_epoch, evaluate  # imported from vision.git, it ha st be cloned!
+from src.features.engine import train_one_epoch, evaluate  
 import mlflow
 import mlflow.pytorch
 import pandas as pd
