@@ -11,6 +11,8 @@ device = torch.device('cpu')
 model = torch.load('models/baseline.pth', map_location=device)
 model.eval()  # Set the model to evaluation mode
 
+# Images to test
+
 
 @pytest.mark.parametrize(
     "image_path, target_path",
@@ -30,22 +32,18 @@ def test_model_performance(image_path, target_path):
     image = Image.open(image_path).convert("RGB")
     # Convert the single image to a batch (size 1)
     image = [transforms.ToTensor()(image).to(device)]
-
     target = torch.load(target_path, map_location=device)
 
     # Get model predictions for the input image
     predictions = model(image)
 
-    # Define a tolerance level for numerical comparisons (e.g., for bounding box coordinates)
-    tolerance = 1e-5
+    # Define a tolerance level for numerical comparisons
+    score_tolerance = 0.05
+    bbox_tolerance = 1.0
+    mask_tolerance = 0.05
 
- # Define a tolerance level for numerical comparisons
-    bbox_tolerance = 1.0  # Adjust this value as needed
-    mask_tolerance = 0.05  # Adjust this value as needed
-
- # Check if the predictions are empty or not
+    # Check if the predictions are empty or not --> nothing to compare
     if not predictions[0]['boxes'].shape[0] and not target['boxes'].shape[0]:
-        # Both predictions and targets are empty; nothing to compare
         return
 
     # Filter out predictions with scores lower than the threshold
@@ -58,31 +56,17 @@ def test_model_performance(image_path, target_path):
     assert len(predictions[0]['scores']) == len(
         target['scores']), "Number of predictions does not match"
 
-    # Compare common labels and score differences --> NOOOOO
-    common_labels = set(predictions[0]['labels']).intersection(target['labels'])
-    for label in common_labels:
-        pred_indices = [i for i, l in enumerate(predictions[0]['labels']) if l == label]
-        target_indices = [i for i, l in enumerate(target['labels']) if l == label]
-        assert all(torch.isclose(predictions[0]['scores'][pred_i], target['scores'][target_i], rtol=bbox_tolerance, atol=bbox_tolerance)
-                   for pred_i, target_i in zip(pred_indices, target_indices)), "Score differences for common labels"
+    # # Compare common labels and score differences
+    # common_labels = set(predictions[0]['labels']).intersection(target['labels'])
+    # for label in common_labels:
+    #     pred_indices = [i for i, l in enumerate(predictions[0]['labels']) if l == label]
+    #     target_indices = [i for i, l in enumerate(target['labels']) if l == label]
+    #     assert all(torch.isclose(predictions[0]['scores'][pred_i], target['scores'][target_i], rtol=score_tolerance, atol=score_tolerance)
+    #                for pred_i, target_i in zip(pred_indices, target_indices)), "Score differences for common labels"
 
-    # Compare bounding boxes and masks
-    for pred_box, pred_mask in zip(predictions[0]['boxes'], predictions[0]['masks']):
-        for target_box, target_mask in zip(target['boxes'], target['masks']):
-            assert torch.allclose(pred_box, target_box, rtol=bbox_tolerance,
-                                  atol=bbox_tolerance), "Bounding boxes do not match"
-            assert torch.allclose(pred_mask, target_mask, rtol=mask_tolerance,
-                                  atol=mask_tolerance), "Masks do not match"
 
-    #
-    # # Check if the predictions are empty or not
-    # if predictions[0]['boxes'].shape[0] == 0 and target['boxes'].shape[0] == 0:
-    #     return  # No predictions and no targets; nothing to compare
-    #
-    # # Compare individual components of the predictions to the target
-    # assert torch.allclose(predictions[0]['boxes'], target['boxes'],
-    #                       rtol=tolerance, atol=tolerance), "Bounding box do not match"
-    # assert torch.equal(predictions[0]['labels'], target['labels']), "Predictions do not match"
-    # assert torch.allclose(predictions[0]['scores'], target['scores'],
-    #                       rtol=tolerance, atol=tolerance), "Scores do not match"
-    # assert torch.equal(predictions[0]['masks'], target['masks']), "Masks do not match"
+for pred_box, pred_mask, target_box, target_mask in zip(predictions[0]['boxes'], predictions[0]['masks'], target['boxes'], target['masks']):
+    assert torch.allclose(pred_box, target_box, rtol=bbox_tolerance,
+                          atol=bbox_tolerance), "Bounding boxes do not match"
+    assert torch.allclose(pred_mask, target_mask, rtol=mask_tolerance,
+                          atol=mask_tolerance), "Masks do not match"

@@ -1,109 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="3" failures="0" skipped="0" tests="3" time="3.592" timestamp="2023-10-22T21:48:49.328937" hostname="MacBook-Pro-de-Claudia.local"><testcase classname="" name="test_models" time="0.000"><error message="collection failure">/usr/local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call
-    result: Optional[TResult] = func()
-/usr/local/lib/python3.10/site-packages/_pytest/runner.py:372: in &lt;lambda&gt;
-    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:531: in collect
-    self._inject_setup_module_fixture()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture
-    self.obj, ("setUpModule", "setup_module")
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:310: in obj
-    self._obj = obj = self._getobj()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj
-    return self._importtestmodule()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
-    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
-/usr/local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
-    importlib.import_module(module_name)
-/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
-    ???
-&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
-    ???
-&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
-    ???
-&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
-    ???
-/usr/local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
-    exec(co, module.__dict__)
-test_models.py:11: in &lt;module&gt;
-    model = torch.load('models/baseline.pth', map_location=device)
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:791: in load
-    with _open_file_like(f, 'rb') as opened_file:
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:271: in _open_file_like
-    return _open_file(name_or_buffer, mode)
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:252: in __init__
-    super().__init__(open(name, mode))
-E   FileNotFoundError: [Errno 2] No such file or directory: 'models/baseline.pth'</error></testcase><testcase classname="" name="test_negative_det" time="0.000"><error message="collection failure">/usr/local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call
-    result: Optional[TResult] = func()
-/usr/local/lib/python3.10/site-packages/_pytest/runner.py:372: in &lt;lambda&gt;
-    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:531: in collect
-    self._inject_setup_module_fixture()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture
-    self.obj, ("setUpModule", "setup_module")
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:310: in obj
-    self._obj = obj = self._getobj()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj
-    return self._importtestmodule()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
-    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
-/usr/local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
-    importlib.import_module(module_name)
-/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
-    ???
-&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
-    ???
-&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
-    ???
-&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
-    ???
-/usr/local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
-    exec(co, module.__dict__)
-test_negative_det.py:12: in &lt;module&gt;
-    model = torch.load('models/baseline.pth', map_location=device)
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:791: in load
-    with _open_file_like(f, 'rb') as opened_file:
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:271: in _open_file_like
-    return _open_file(name_or_buffer, mode)
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:252: in __init__
-    super().__init__(open(name, mode))
-E   FileNotFoundError: [Errno 2] No such file or directory: 'models/baseline.pth'</error></testcase><testcase classname="" name="test_positive_det" time="0.000"><error message="collection failure">/usr/local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call
-    result: Optional[TResult] = func()
-/usr/local/lib/python3.10/site-packages/_pytest/runner.py:372: in &lt;lambda&gt;
-    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:531: in collect
-    self._inject_setup_module_fixture()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture
-    self.obj, ("setUpModule", "setup_module")
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:310: in obj
-    self._obj = obj = self._getobj()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj
-    return self._importtestmodule()
-/usr/local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
-    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
-/usr/local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
-    importlib.import_module(module_name)
-/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
-    ???
-&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
-    ???
-&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
-    ???
-&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
-    ???
-/usr/local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
-    exec(co, module.__dict__)
-test_positive_det.py:11: in &lt;module&gt;
-    model = torch.load('models/baseline.pth', map_location=device)
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:791: in load
-    with _open_file_like(f, 'rb') as opened_file:
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:271: in _open_file_like
-    return _open_file(name_or_buffer, mode)
-/usr/local/lib/python3.10/site-packages/torch/serialization.py:252: in __init__
-    super().__init__(open(name, mode))
-E   FileNotFoundError: [Errno 2] No such file or directory: 'models/baseline.pth'</error></testcase></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="5" time="5.993" timestamp="2023-10-27T20:46:57.785142" hostname="MacBook-Pro-de-Claudia.local"><testcase classname="test_api" name="test_index" time="0.016" /><testcase classname="test_api" name="test_return_bb" time="0.961"><failure message="assert 500 == 200">def test_return_bb():
+        with open(test_image_path, "rb") as image_file:
+            files = {"image": ("african.jpeg", image_file)}
+            response = client.post("/bb", files=files)
+            json = response.json()
+            assert json["message"] == "Request failed"
+            assert json["method"] == "POST"
+&gt;           assert json["status-code"] == 200
+E           assert 500 == 200
+
+test_api.py:40: AssertionError</failure></testcase><testcase classname="test_api" name="test_draw_bb" time="0.988"><failure message="AssertionError: assert 'application/json' == 'image/png'&#10;  - image/png&#10;  + application/json">def test_draw_bb():
+        with open(test_image_path, "rb") as image_file:
+            files = {"image": ("african.jpeg", image_file)}
+            response = client.post("/bb_draw", files=files)
+            assert response.status_code == 200
+&gt;           assert response.headers["content-type"] == "image/png"
+E           AssertionError: assert 'application/json' == 'image/png'
+E             - image/png
+E             + application/json
+
+test_api.py:62: AssertionError</failure></testcase><testcase classname="test_api" name="test_draw_masks" time="0.951"><failure message="AssertionError: assert 'application/json' == 'image/png'&#10;  - image/png&#10;  + application/json">def test_draw_masks():
+        with open(test_image_path, "rb") as image_file:
+            files = {"image": ("african.jpeg", image_file)}
+            response = client.post("/masks", files=files)
+            assert response.status_code == 200
+&gt;           assert response.headers["content-type"] == "image/png"
+E           AssertionError: assert 'application/json' == 'image/png'
+E             - image/png
+E             + application/json
+
+test_api.py:79: AssertionError</failure></testcase><testcase classname="test_api" name="test_error_case" time="0.043"><failure message="AssertionError: assert 'error' in {'data': {'error': 'cannot identify image file &lt;_io.BytesIO object at 0x14d097740&gt;'}, 'message': 'Request failed', 'method': 'POST', 'status-code': 500, ...}">def test_error_case():
+        # Create an invalid image (e.g., a text file) and send it in the request
+        with open("invalid_image.txt", "w") as text_file:
+            text_file.write("This is not an image.")
+    
+        with open("invalid_image.txt", "rb") as image_file:
+            files = {"image": ("invalid_image.txt", image_file)}
+            response = client.post("/bb_draw", files=files)
+    
+        # Ensure the response indicates an error
+        json = response.json()
+&gt;       assert "error" in json
+E       AssertionError: assert 'error' in {'data': {'error': 'cannot identify image file &lt;_io.BytesIO object at 0x14d097740&gt;'}, 'message': 'Request failed', 'method': 'POST', 'status-code': 500, ...}
+
+test_api.py:102: AssertionError</failure></testcase></testsuite></testsuites>
