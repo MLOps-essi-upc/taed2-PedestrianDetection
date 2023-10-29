@@ -37,13 +37,13 @@ mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
 
 # Define the data loader
 data_loader_test = torch.utils.data.DataLoader(
-    testing_dataset, batch_size=1, shuffle=True, num_workers=2,
+    testing_dataset, batch_size=1, shuffle=True, num_workers=0,
     collate_fn=utils.collate_fn)
 
 
 # Start tracking emissions for training
 tracker = EmissionsTracker(
-    output_file=os.path.join(root_dir, 'metrics/emissions_retraining.csv'),
+    output_file=os.path.join(root_dir, 'metrics/emissions.csv'),
     on_csv_write='append',
 )
 tracker.start()
@@ -57,5 +57,5 @@ final_model = torch.load(os.path.join(root_dir, 'models/baseline.pth'), map_loca
 
 
 evaluation_mflow('test', data_loader_test, final_model, device,
-                 emissions_file="emissions_retraining.csv")
+                 emissions_file=os.path.join(root_dir, 'metrics/emissions.csv'))
 tracker.stop()
