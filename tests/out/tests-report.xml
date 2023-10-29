@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="5" time="5.993" timestamp="2023-10-27T20:46:57.785142" hostname="MacBook-Pro-de-Claudia.local"><testcase classname="test_api" name="test_index" time="0.016" /><testcase classname="test_api" name="test_return_bb" time="0.961"><failure message="assert 500 == 200">def test_return_bb():
         with open(test_image_path, "rb") as image_file:
             files = {"image": ("african.jpeg", image_file)}
@@ -43,3 +44,5 @@ test_api.py:79: AssertionError</failure></testcase><testcase classname="test_api
 E       AssertionError: assert 'error' in {'data': {'error': 'cannot identify image file &lt;_io.BytesIO object at 0x14d097740&gt;'}, 'message': 'Request failed', 'method': 'POST', 'status-code': 500, ...}
 
 test_api.py:102: AssertionError</failure></testcase></testsuite></testsuites>
+
+
