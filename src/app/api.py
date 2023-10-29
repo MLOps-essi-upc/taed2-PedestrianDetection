@@ -1,19 +1,18 @@
 """Main script: it includes our API initialization and endpoints."""
 
-from fastapi import FastAPI, UploadFile, Request, HTTPException
-from fastapi.responses import FileResponse
-from starlette.responses import JSONResponse
-from starlette.responses import StreamingResponse
-from PIL import Image
-from torchvision import transforms
 import io
-import torch
 from http import HTTPStatus
 from functools import wraps
 from datetime import datetime
+import os
+from fastapi import FastAPI, UploadFile, Request, HTTPException
+from starlette.responses import StreamingResponse
+from PIL import Image
+from torchvision import transforms
+import torch
 from draw_segmentation_map import draw_segmentation_map
 from draw_mask_map import draw_mask_map
-import os
+
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
 model_path = os.path.join(root_dir, "models/baseline.pth")
@@ -34,7 +33,7 @@ def detect_pedestrians(img, score_thres: float):
         output = app.state.model([img])[0]  # expects a list of RGB imgs and returns a list
 
     # If no detections
-    if output['labels'].size() == torch.Size([0]): 
+    if output['labels'].size() == torch.Size([0]):
         return output
 
     # Otherwise continue:
@@ -73,6 +72,7 @@ def construct_response(f):
             "method": request.method,
             "status-code": results["status-code"],
             "timestamp": datetime.now().isoformat(),
+            # pylint: disable=W0212
             "url": request.url._url,
         }
 
@@ -98,7 +98,7 @@ def _load_model():
 
 @app.get("/", tags=["General"])
 @construct_response
-def welcome(request: Request):
+def welcome():
     """Root endpoint with a welcome message"""
 
     response = {
@@ -110,14 +110,12 @@ def welcome(request: Request):
     return response
 
 
-
-
 @app.post("/bb_draw", tags=["bb"])
 def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
     """Detect pedestrians with bounding boxes and return an image endpoint"""
 
-    # Raise exception when input is not in the right format 
-    if not (0.0 <= score_thres <= 1.0): # we are sure it is a float because function's input type
+    # Raise exception when input is not in the right format
+    if not 0.0 <= score_thres <= 1.0: # we are sure it is a float because function's input type
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             detail="score_thres must be a number between 0 and 1")
 
@@ -125,7 +123,6 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
     if image_extension not in ["jpg", "jpeg", "png", "gif"]:
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             detail="The input file must be an image (jpg, jpeg, png, gif)")
-    
     else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
@@ -157,8 +154,7 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         os.remove(image_path)
 
         return image_response
-        
-   
+
 
 @app.post("/bb", tags=["bb"])
 @construct_response
@@ -166,7 +162,7 @@ def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
     """Detect pedestrians with bounding boxes and return coordinates and scores endpoint"""
 
     # Raise exception when input is not in the right format
-    if not (0.0 <= score_thres <= 1.0):  # we are sure it is a float because function's input type
+    if not 0.0 <= score_thres <= 1.0:  # we are sure it is a float because function's input type
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             detail="score_thres must be a number between 0 and 1")
 
@@ -195,13 +191,13 @@ def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
 
         return response
 
-    
+
 @app.post("/masks", tags=["mask"])
 def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
     """Detect pedestrians with masks and return image endpoint"""
 
     # Raise exception when input is not in the right format
-    if not (0.0 <= score_thres <= 1.0):  # we are sure it is a float because function's input type
+    if not 0.0 <= score_thres <= 1.0:  # we are sure it is a float because function's input type
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             detail="score_thres must be a number between 0 and 1")
 
