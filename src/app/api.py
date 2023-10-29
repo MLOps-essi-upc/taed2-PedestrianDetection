@@ -12,7 +12,7 @@ from http import HTTPStatus
 from functools import wraps
 from datetime import datetime
 from draw_segmentation_map import draw_segmentation_map
-from draw_mask import draw_mask
+from draw_mask_map import draw_mask_map
 import os
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
@@ -135,7 +135,7 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         result = detect_pedestrians(img, score_thres)
 
         # Draw bounding boxes on the image using the provided function
-        img_with_bb = draw_mask(img, result)
+        img_with_bb = draw_segmentation_map(img, result)
 
         # Convert the NumPy array to a PIL Image
         img_with_bb_pil = Image.fromarray((img_with_bb * 255).astype('uint8'))
@@ -219,7 +219,7 @@ def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
         result = detect_pedestrians(img, score_thres)
 
         # Draw bounding boxes on the image using the provided function
-        img_with_mask = draw_mask(img, result)
+        img_with_mask = draw_mask_map(img, result)
 
         # Convert the NumPy array to a PIL Image
         img_with_mask_pil = Image.fromarray((img_with_mask * 255).astype('uint8'))

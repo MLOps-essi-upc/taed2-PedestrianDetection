@@ -27,7 +27,7 @@ COCO_NAMES = ['__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airpl
 COLORS = np.random.uniform(0, 255, size=(len(COCO_NAMES), 3)).astype(int)
 
 
-def draw_mask(image, target, score_thres=0.8):
+def draw_mask_map(image, target, score_thres=0.8):
 
     # Convert back to numpy arrays
     _image = np.copy(image.cpu().detach().numpy().transpose(1, 2, 0)*255)
