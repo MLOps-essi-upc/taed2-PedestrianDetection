@@ -1,5 +1,5 @@
 """
-Module Name: coco_utils.py
+Module Name: draw_segmentation_map.py
 
 This module provides utility functions for working with COCO datasets
 and segmentation map visualization.
@@ -8,6 +8,7 @@ and segmentation map visualization.
 import random
 import cv2
 import numpy as np
+import torch
 
 
 COCO_NAMES = ['__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
@@ -19,55 +20,76 @@ COCO_NAMES = ['__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airpl
               'bottle', 'N/A', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl',
               'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
               'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed', 'N/A', 'dining table',
-              'N/A', 'N/A', 'toilet', 'N/A', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
-              'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'N/A', 'book',
+              'N/A', 'N/A', 'toilet', 'N/A', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 
+              'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'N/A', 'book',
               'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
 COLORS = np.random.uniform(0, 255, size=(len(COCO_NAMES), 3)).astype(int)
 
 
 def draw_segmentation_map(image, target, score_thres=0.8):
+    """
+    This function takes an input image and a target (typically from a COCO dataset) and 
+    draws masks, bounding boxes, and labels on the image for segmentation visualization.
+
+    Parameters:
+        - image (torch.Tensor): The input image as a PyTorch tensor.
+        - target (dict): A dictionary containing information about the detected objects, 
+        including masks, bounding boxes, labels, and scores.
+        - score_thres (float): A threshold for object detection scores. Objects with scores 
+        below this threshold will not be drawn on the image.
+
+    Returns:
+        - np.ndarray: The image with masks, bounding boxes, and labels drawn, represented as a 
+        NumPy array with values in the range [0, 1].
+    """
 
     # Convert back to numpy arrays
     _image = np.copy(image.cpu().detach().numpy().transpose(1, 2, 0)*255)
-    _masks = np.copy(target['masks'].cpu().detach().numpy().astype(np.float32))
-    _boxes = np.copy(target['boxes'].cpu().detach().numpy().astype(int))
-    _labels = np.copy(target['labels'].cpu().detach().numpy().astype(int))
-    if "scores" in target:
-        _scores = np.copy(target["scores"].cpu().detach().numpy())
+
+    if target['labels'].size() == torch.Size([0]):  # no prediction --> all background
+        _image = 0.3*_image
     else:
-        _scores = np.ones(len(_masks), dtype=np.float32)
+        _masks = np.copy(target['masks'].cpu().detach().numpy().astype(np.float32))
+        _boxes = np.copy(target['boxes'].cpu().detach().numpy().astype(int))
+        _labels = np.copy(target['labels'].cpu().detach().numpy().astype(int))
+        if "scores" in target:
+            _scores = np.copy(target["scores"].cpu().detach().numpy())
+        else:
+            _scores = np.ones(len(_masks), dtype=np.float32)
 
-    alpha = 0.3
+        label_names = [COCO_NAMES[i] for i in _labels]
 
-    label_names = [COCO_NAMES[i] for i in _labels]
+        # Add mask if _scores
+        m = np.zeros_like(_masks[0].squeeze())
+        for i, mask in enumerate(_masks):
+            if _scores[i] > score_thres:
+                m = m + mask
 
-    # Add mask if _scores
-    m = np.zeros_like(_masks[0].squeeze())
-    for i in range(len(_masks)):
-        if _scores[i] > score_thres:
-            m = m + _masks[i]
+        # Make sure m is the right shape
+        m = m.squeeze()
 
-    # Make sure m is the right shape
-    m = m.squeeze()
+        # dark pixel outside masks
+        _image[m < 0.5] = 0.3*_image[m < 0.5]
 
-    # dark pixel outside masks
-    _image[m < 0.5] = 0.3*_image[m < 0.5]
+        # convert from RGB to OpenCV BGR and back (cv2.rectangle is just too picky)
+        # pylint: disable=no-member
+        _image = cv2.cvtColor(_image, cv2.COLOR_RGB2BGR)
+        _image = cv2.cvtColor(_image, cv2.COLOR_BGR2RGB)
+        # pylint: enable=no-member  # Re-enable pylint checks
 
-    # convert from RGB to OpenCV BGR and back (cv2.rectangle is just too picky)
-    _image = cv2.cvtColor(_image, cv2.COLOR_RGB2BGR)
-    _image = cv2.cvtColor(_image, cv2.COLOR_BGR2RGB)
+        for i, _ in enumerate(_masks):
+            if _scores[i] > score_thres:
+                # apply a randon color to each object
+                color = COLORS[random.randrange(0, len(COLORS))].tolist()
 
-    for i in range(len(_masks)):
-        if _scores[i] > score_thres:
-            # apply a randon color to each object
-            color = COLORS[random.randrange(0, len(COLORS))].tolist()
-
-            # draw the bounding boxes around the objects
-            cv2.rectangle(_image, _boxes[i][0:2], _boxes[i][2:4], color=color, thickness=2)
-            # put the label text above the objects
-            cv2.putText(_image, label_names[i], (_boxes[i][0], _boxes[i][1]-10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, color,
-                        thickness=1, lineType=cv2.LINE_AA)
+                # draw the bounding boxes around the objects
+                # pylint: disable=no-member
+                cv2.rectangle(_image, _boxes[i][0:2], _boxes[i][2:4], color=color, thickness=2)
+                # put the label text above the objects
+                cv2.putText(_image, label_names[i], (_boxes[i][0], _boxes[i][1]-10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, color,
+                            thickness=1, lineType=cv2.LINE_AA)
+                # pylint: enable=no-member  # Re-enable pylint checks
 
     return _image/255
