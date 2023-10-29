@@ -1,6 +1,4 @@
 from codecarbon import EmissionsTracker
-from src.models.data import load_data
-from src.data.pedestrian_dataset_class import PedestrianDataset  # Import the required class
 import mlflow
 import mlflow.pytorch
 from mlflow import log_metric, log_param, log_params, log_artifacts
@@ -11,9 +9,17 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 import os
 import getpass
-from src.features.engine import train_one_epoch, evaluate
-from src.models.modelling import evaluation_mflow, train_mlflow
 import configparser
+from data import load_data
+from modelling import evaluation_mflow, train_mlflow
+import sys
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
+sys.path.insert(1, os.path.join(root_dir, 'src/data'))
+sys.path.insert(1, os.path.join(root_dir, 'src/features'))
+
+from pedestrian_dataset_class import PedestrianDataset  
+from engine import train_one_epoch, evaluate
 
 
 
@@ -24,8 +30,7 @@ training_epochs = 3
 
 
 # Download preprocessed data
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
-DATA_FOLDER = os.path.join(root_dir, 'processed_data')
+DATA_FOLDER = os.path.join(root_dir, 'data/processed')
 training_dataset, validation_dataset, _ = load_data(DATA_FOLDER)
 
 
@@ -33,9 +38,8 @@ training_dataset, validation_dataset, _ = load_data(DATA_FOLDER)
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/RodrigoBonferroni/taed2-PedestrianDetection.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "claudiamur"
 config = configparser.ConfigParser()
-config.read('config.ini')
-password = config['Credentials']['mlflow_password']
-os.environ["MLFLOW_TRACKING_PASSWORD"] = password
+config.read(os.path.join(root_dir, 'config.ini'))
+os.environ["MLFLOW_TRACKING_PASSWORD"] = config['Credentials']['mlflow_password']
 mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
 
 
@@ -78,11 +82,11 @@ model.to(device)
 
 
 # Fine tunning experiment
-mlflow.set_experiment("Pipeline: Fine tunning")
+mlflow.set_experiment("Pipeline retraining")
 tracker.start()
 train_mlflow(model, data_loader, data_loader_val, num_epochs=training_epochs, hidden_layer=hidden_layer,
              batch_size_train=batch_size_train, name="baseline", device=device)
 tracker.stop()
 
-torch.save(model, os.path.join(root_dir, 'models/baseline.pth')) # es sobreescriu
+torch.save(model, os.path.join(root_dir, 'models/baseline_retrain.pth')) # es sobreescriu
 

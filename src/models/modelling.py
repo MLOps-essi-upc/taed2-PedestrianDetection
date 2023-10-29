@@ -5,10 +5,18 @@ This module provides utility functions for training and evaluating models with M
 """
 
 import torch
-from src.features.engine import train_one_epoch, evaluate  
 import mlflow
 import mlflow.pytorch
 import pandas as pd
+import os 
+import sys
+
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
+sys.path.insert(1, os.path.join(root_dir, 'src/features'))
+
+from engine import train_one_epoch, evaluate
+
 
 
 def evaluation_mflow(name_run, data_loader_val, model, device):
@@ -30,6 +38,7 @@ def evaluation_mflow(name_run, data_loader_val, model, device):
     mlflow.start_run(run_name=name_run)
 
     evaluator = evaluate(model, data_loader_val, device=device)
+
 
     # Log the metrics
     mlflow.log_metrics({

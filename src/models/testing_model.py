@@ -1,25 +1,28 @@
 from codecarbon import EmissionsTracker
-from src.models.data import load_data
-# Import the required class
-from src.data.pedestrian_dataset_class import PedestrianDataset
 import mlflow
 import mlflow.pytorch
 from mlflow import log_metric, log_param, log_params, log_artifacts
 import torch
-import utils
-import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
-import os
-import getpass
-from src.features.engine import train_one_epoch, evaluate
-from src.models.modelling import evaluation_mflow, train_mlflow
 import configparser
+from data import load_data
+from modelling import evaluation_mflow, train_mlflow
+import os
+import sys
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
+sys.path.insert(1, os.path.join(root_dir, 'src/data'))
+sys.path.insert(1, os.path.join(root_dir, 'src/features'))
+
+#from pedestrian_dataset_class import PedestrianDataset  
+from engine import train_one_epoch, evaluate
+import utils 
 
 
 # Download preprocessed data
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
-DATA_FOLDER = os.path.join(root_dir, 'processed_data')
+DATA_FOLDER = os.path.join(root_dir, 'data/processed')
 _, _, testing_dataset = load_data(DATA_FOLDER)
 
 
@@ -27,15 +30,16 @@ _, _, testing_dataset = load_data(DATA_FOLDER)
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/RodrigoBonferroni/taed2-PedestrianDetection.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "claudiamur"
 config = configparser.ConfigParser()
-config.read('config.ini')
-password = config['Credentials']['mlflow_password']
-os.environ["MLFLOW_TRACKING_PASSWORD"] = password
+config.read(os.path.join(root_dir,'config.ini'))
+os.environ["MLFLOW_TRACKING_PASSWORD"] = config['Credentials']['mlflow_password']
 mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
+
 
 # Define the data loader
 data_loader_test = torch.utils.data.DataLoader(
     testing_dataset, batch_size=1, shuffle=True, num_workers=2,
     collate_fn=utils.collate_fn)
+
 
 # Start tracking emissions for training
 tracker = EmissionsTracker(
@@ -44,12 +48,13 @@ tracker = EmissionsTracker(
 )
 tracker.start()
 
-mlflow.set_experiment("Pipeline: Fine tunning")
+mlflow.set_experiment("Pipeline retraining")
 
 # load best model
-final_model = torch.load('baseline.pth')
-
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+final_model = torch.load(os.path.join(root_dir, 'models/baseline.pth'), map_location=device)
+
 
 evaluation_mflow('test', data_loader_test, final_model, device)
 tracker.stop()
