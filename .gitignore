@@ -2,6 +2,7 @@
 .env
 env/
 ENV/
+config.ini
 
 #macOS
 .DS_Store

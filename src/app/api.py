@@ -1,22 +1,20 @@
 """Main script: it includes our API initialization and endpoints."""
 
-from fastapi import FastAPI, UploadFile, Request
-from fastapi.responses import FileResponse
-from starlette.responses import JSONResponse
-from starlette.responses import StreamingResponse
-from PIL import Image
-from torchvision import transforms
 import io
-import torch
 from http import HTTPStatus
 from functools import wraps
 from datetime import datetime
-from src.app.draw_segmentation_map import draw_segmentation_map
-from src.app.draw_mask import draw_mask
 import os
+from fastapi import FastAPI, UploadFile, Request, HTTPException
+from starlette.responses import StreamingResponse
+from PIL import Image
+from torchvision import transforms
+import torch
+from draw_segmentation_map import draw_segmentation_map
+from draw_mask_map import draw_mask_map
+
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
-print(root_dir)
 model_path = os.path.join(root_dir, "models/baseline.pth")
 
 # Define application
@@ -26,15 +24,19 @@ app = FastAPI(
     version="0.1",
 )
 
-"""Function to detect pedestrians in an image"""
-
 
 def detect_pedestrians(img, score_thres: float):
+    """Function to detect pedestrians in an image"""
 
     # Make predictions for the image
     with torch.no_grad():
         output = app.state.model([img])[0]  # expects a list of RGB imgs and returns a list
 
+    # If no detections
+    if output['labels'].size() == torch.Size([0]):
+        return output
+
+    # Otherwise continue:
     # Filter predictions based on score and label thresholds
     indices_to_keep = torch.nonzero(
         torch.logical_and(
@@ -54,10 +56,11 @@ def detect_pedestrians(img, score_thres: float):
     return output
 
 
-"""Decorator to construct a JSON response for an endpoint's results"""
 
 
 def construct_response(f):
+    """Decorator to construct a JSON response for an endpoint's results"""
+
     @wraps(f)
     def wrap(request: Request, *args, **kwargs):
 
@@ -69,6 +72,7 @@ def construct_response(f):
             "method": request.method,
             "status-code": results["status-code"],
             "timestamp": datetime.now().isoformat(),
+            # pylint: disable=W0212
             "url": request.url._url,
         }
 
@@ -80,39 +84,46 @@ def construct_response(f):
     return wrap
 
 
-"""Load the model on startup"""
-
-
 @app.on_event("startup")
 def _load_model():
-    # Load the model
+    """Load the model on startup"""
+
     device = torch.device('cpu')
     model = torch.load(model_path, map_location=device)
     model.eval()  # Set the model to evaluation mode
     app.state.model = model
 
 
-"""Root endpoint with a welcome message"""
 
 
 @app.get("/", tags=["General"])
 @construct_response
-def _index(request: Request):
+def welcome():
+    """Root endpoint with a welcome message"""
+
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
-        "data": {"message": "Welcome to the Pedestrian Detection API! Please read the `/docs` for more information."},
+        "data": {"welcome_message": "Welcome to the Pedestrian Detection API! Please read the `/docs` for more information."},
     }
 
     return response
 
 
-"""Detect pedestrians with bounding boxes and return an image endpoint"""
-
-
 @app.post("/bb_draw", tags=["bb"])
 def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
-    try:
+    """Detect pedestrians with bounding boxes and return an image endpoint"""
+
+    # Raise exception when input is not in the right format
+    if not 0.0 <= score_thres <= 1.0: # we are sure it is a float because function's input type
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="score_thres must be a number between 0 and 1")
+
+    image_extension = image.filename.split('.')[-1].lower()
+    if image_extension not in ["jpg", "jpeg", "png", "gif"]:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="The input file must be an image (jpg, jpeg, png, gif)")
+    else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
         img = transforms.ToTensor()(img)
@@ -139,27 +150,28 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         # Return the image as a file for download using StreamingResponse
         image_response = StreamingResponse(io.BytesIO(image_bytes), media_type="image/png")
 
+        # Delete image
+        os.remove(image_path)
+
         return image_response
-    except Exception as e:
-        # Construct an error response
-        error_response = {
-            "message": "Request failed",
-            "method": request.method,
-            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
-            "timestamp": datetime.now().isoformat(),
-            "url": request.url._url,
-            "data": {"error": str(e)}
-        }
-        return error_response
-
-
-"""Detect pedestrians with bounding boxes and return coordinates and scores endpoint"""
 
 
 @app.post("/bb", tags=["bb"])
 @construct_response
 def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
-    try:
+    """Detect pedestrians with bounding boxes and return coordinates and scores endpoint"""
+
+    # Raise exception when input is not in the right format
+    if not 0.0 <= score_thres <= 1.0:  # we are sure it is a float because function's input type
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="score_thres must be a number between 0 and 1")
+
+    image_extension = image.filename.split('.')[-1].lower()
+    if image_extension not in ["jpg", "jpeg", "png", "gif"]:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="The input file must be an image (jpg, jpeg, png, gif)")
+
+    else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
         img = transforms.ToTensor()(img)
@@ -178,22 +190,23 @@ def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         }
 
         return response
-    except Exception as e:
-        # Construct an error response
-        error_response = {
-            "message": "Request failed",
-            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
-            "data": {"error": str(e)}
-        }
-        return error_response
-
-
-"""Detect pedestrians with masks and return image endpoint"""
 
 
 @app.post("/masks", tags=["mask"])
-def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
-    try:
+def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
+    """Detect pedestrians with masks and return image endpoint"""
+
+    # Raise exception when input is not in the right format
+    if not 0.0 <= score_thres <= 1.0:  # we are sure it is a float because function's input type
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="score_thres must be a number between 0 and 1")
+
+    image_extension = image.filename.split('.')[-1].lower()
+    if image_extension not in ["jpg", "jpeg", "png", "gif"]:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="The input file must be an image (jpg, jpeg, png, gif)")
+
+    else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
         img = transforms.ToTensor()(img)
@@ -202,33 +215,26 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         result = detect_pedestrians(img, score_thres)
 
         # Draw bounding boxes on the image using the provided function
-        img_with_bb = draw_mask(img, result)
+        img_with_mask = draw_mask_map(img, result)
 
         # Convert the NumPy array to a PIL Image
-        img_with_bb_pil = Image.fromarray((img_with_bb * 255).astype('uint8'))
+        img_with_mask_pil = Image.fromarray((img_with_mask * 255).astype('uint8'))
 
         # Save the image to a temporary file
         image_path = "image.png"  # Choose an appropriate path and format
 
         # Save the PIL image to the specified path
-        img_with_bb_pil.save(image_path, "PNG")
+        img_with_mask_pil.save(image_path, "PNG")
 
         # Open the saved image file
         with open(image_path, "rb") as image_file:
             image_bytes = image_file.read()
 
         # Return the image as a file for download using StreamingResponse
-        image_response = StreamingResponse(io.BytesIO(image_bytes), media_type="image/png")
+        image_response = StreamingResponse(
+            io.BytesIO(image_bytes), media_type="image/png")
+
+        # Delete image
+        os.remove(image_path)
 
         return image_response
-    except Exception as e:
-        # Construct an error response
-        error_response = {
-            "message": "Request failed",
-            "method": request.method,
-            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
-            "timestamp": datetime.now().isoformat(),
-            "url": request.url._url,
-            "data": {"error": str(e)}
-        }
-        return error_response
