@@ -8,13 +8,16 @@ import torchvision.transforms as transforms
 
 # Load the model from models directory
 device = torch.device('cpu')
-model = torch.load('models/baseline.pth', map_location=device)
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+model_path = os.path.join(root_dir, 'models/baseline.pth')
+model = torch.load(model_path, map_location=device)
 model.eval()  # Set the model to evaluation mode
+
 
 
 @pytest.mark.parametrize(
     "image_path",
-    ["tests/img_test/positive_detection.jpeg"],
+    [os.path.join(root_dir, "tests/img_test/positive_detection.jpeg")],
 )
 # Test when a pedestrian is present in the image
 def test_pedestrian_detection_positive(image_path):
