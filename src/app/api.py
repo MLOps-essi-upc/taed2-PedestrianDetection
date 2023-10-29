@@ -1,6 +1,6 @@
 """Main script: it includes our API initialization and endpoints."""
 
-from fastapi import FastAPI, UploadFile, Request
+from fastapi import FastAPI, UploadFile, Request, HTTPException
 from fastapi.responses import FileResponse
 from starlette.responses import JSONResponse
 from starlette.responses import StreamingResponse
@@ -25,17 +25,19 @@ app = FastAPI(
     version="0.1",
 )
 
-"""Function to detect pedestrians in an image"""
 
 def detect_pedestrians(img, score_thres: float):
+    """Function to detect pedestrians in an image"""
 
     # Make predictions for the image
     with torch.no_grad():
         output = app.state.model([img])[0]  # expects a list of RGB imgs and returns a list
 
-    if output['labels'].size() == torch.Size([0]):
+    # If no detections
+    if output['labels'].size() == torch.Size([0]): 
         return output
 
+    # Otherwise continue:
     # Filter predictions based on score and label thresholds
     indices_to_keep = torch.nonzero(
         torch.logical_and(
@@ -55,10 +57,11 @@ def detect_pedestrians(img, score_thres: float):
     return output
 
 
-"""Decorator to construct a JSON response for an endpoint's results"""
 
 
 def construct_response(f):
+    """Decorator to construct a JSON response for an endpoint's results"""
+
     @wraps(f)
     def wrap(request: Request, *args, **kwargs):
 
@@ -81,39 +84,49 @@ def construct_response(f):
     return wrap
 
 
-"""Load the model on startup"""
-
-
 @app.on_event("startup")
 def _load_model():
-    # Load the model
+    """Load the model on startup"""
+
     device = torch.device('cpu')
     model = torch.load(model_path, map_location=device)
     model.eval()  # Set the model to evaluation mode
     app.state.model = model
 
 
-"""Root endpoint with a welcome message"""
 
 
 @app.get("/", tags=["General"])
 @construct_response
-def _index(request: Request):
+def welcome(request: Request):
+    """Root endpoint with a welcome message"""
+
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
-        "data": {"message": "Welcome to the Pedestrian Detection API! Please read the `/docs` for more information."},
+        "data": {"welcome_message": "Welcome to the Pedestrian Detection API! Please read the `/docs` for more information."},
     }
 
     return response
 
 
-"""Detect pedestrians with bounding boxes and return an image endpoint"""
 
 
 @app.post("/bb_draw", tags=["bb"])
 def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
-    try:
+    """Detect pedestrians with bounding boxes and return an image endpoint"""
+
+    # Raise exception when input is not in the right format 
+    if not (0.0 <= score_thres <= 1.0): # we are sure it is a float because function's input type
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="score_thres must be a number between 0 and 1")
+
+    image_extension = image.filename.split('.')[-1].lower()
+    if image_extension not in ["jpg", "jpeg", "png", "gif"]:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="The input file must be an image (jpg, jpeg, png, gif)")
+    
+    else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
         img = transforms.ToTensor()(img)
@@ -141,26 +154,25 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         image_response = StreamingResponse(io.BytesIO(image_bytes), media_type="image/png")
 
         return image_response
-    except Exception as e:
-        # Construct an error response
-        error_response = {
-            "message": "Request failed",
-            "method": request.method,
-            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
-            "timestamp": datetime.now().isoformat(),
-            "url": request.url._url,
-            "data": {"error": str(e)}
-        }
-        return error_response
-
-
-"""Detect pedestrians with bounding boxes and return coordinates and scores endpoint"""
-
+        
+   
 
 @app.post("/bb", tags=["bb"])
 @construct_response
 def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
-    try:
+    """Detect pedestrians with bounding boxes and return coordinates and scores endpoint"""
+
+    # Raise exception when input is not in the right format
+    if not (0.0 <= score_thres <= 1.0):  # we are sure it is a float because function's input type
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="score_thres must be a number between 0 and 1")
+
+    image_extension = image.filename.split('.')[-1].lower()
+    if image_extension not in ["jpg", "jpeg", "png", "gif"]:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="The input file must be an image (jpg, jpeg, png, gif)")
+
+    else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
         img = transforms.ToTensor()(img)
@@ -179,22 +191,25 @@ def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         }
 
         return response
-    except Exception as e:
-        # Construct an error response
-        error_response = {
-            "message": "Request failed",
-            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
-            "data": {"error": str(e)}
-        }
-        return error_response
+    
 
-
-"""Detect pedestrians with masks and return image endpoint"""
 
 
 @app.post("/masks", tags=["mask"])
 def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
-    try:
+    """Detect pedestrians with masks and return image endpoint"""
+
+    # Raise exception when input is not in the right format
+    if not (0.0 <= score_thres <= 1.0):  # we are sure it is a float because function's input type
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="score_thres must be a number between 0 and 1")
+
+    image_extension = image.filename.split('.')[-1].lower()
+    if image_extension not in ["jpg", "jpeg", "png", "gif"]:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            detail="The input file must be an image (jpg, jpeg, png, gif)")
+
+    else:
         # Read and preprocess the uploaded image
         img = Image.open(io.BytesIO(image.file.read())).convert("RGB")
         img = transforms.ToTensor()(img)
@@ -222,14 +237,4 @@ def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
         image_response = StreamingResponse(io.BytesIO(image_bytes), media_type="image/png")
 
         return image_response
-    except Exception as e:
-        # Construct an error response
-        error_response = {
-            "message": "Request failed",
-            "method": request.method,
-            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
-            "timestamp": datetime.now().isoformat(),
-            "url": request.url._url,
-            "data": {"error": str(e)}
-        }
-        return error_response
+    
