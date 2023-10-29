@@ -50,6 +50,7 @@ expected_bb_image_path = os.path.join(root_dir, "tests/img_test/bb.png")
 expected_mask_image_path = os.path.join(root_dir, "tests/img_test/mask.png")
 
 
+
 # Test the root endpoint
 def test_welcome():
     """
@@ -91,6 +92,7 @@ def test_return_bb():
         data = json["data"]
         assert "boxes" in data
         assert "scores" in data
+
         # Additional assertions for the specific values within the "data" dictionary
         expected_boxes = [
             [2874.278564453125, 709.43896484375, 3576.279296875, 2858.65234375]
@@ -98,6 +100,7 @@ def test_return_bb():
         expected_scores = [0.9965097308158875]
         assert data["boxes"] == expected_boxes
         assert data["scores"] == expected_scores
+
 
 # Test the /draw_bb endpoint
 def test_draw_bb():
