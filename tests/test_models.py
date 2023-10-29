@@ -1,9 +1,23 @@
+"""
+Pedestrian Detection Model Performance Test
+
+This module contains a test for evaluating the performance of the Pedestrian Detection model 
+on various test images. It loads the model, processes test images, and checks the model's predictions 
+against expected target results. The test assesses the model's performance by comparing predicted 
+bounding boxes and masks with the expected target values.
+
+The test cases included in this module are parameterized for different test images, each with a 
+corresponding target result.
+
+This module is part of the Pedestrian Detection API testing suite.
+
+For more details on the specific test cases and their assertions, refer to the function docstrings below
+"""
+
+import os
 from PIL import Image
 import pytest
 import torch
-import pickle
-import numpy as np
-import os
 import torchvision.transforms as transforms
 
 # Load the model from models directory
@@ -32,6 +46,20 @@ model.eval()  # Set the model to evaluation mode
 
 
 def test_model_performance(image_path, target_path):
+    """
+    Test the performance of the Pedestrian Detection model on various test images. 
+    It loads the provided image and target, makes predictions using the loaded model, and checks 
+    the predictions against the expected target values. The test evaluates the model's performance 
+    by comparing predicted bounding boxes and masks with the expected target values.
+
+    Parameters:
+    - image_path (str): The path to the test image.
+    - target_path (str): The path to the corresponding target result for the test image.
+
+    Raises:
+    - AssertionError: If the model's predictions do not match the expected target values.
+    """
+
     # Load the image and target
     image = Image.open(image_path).convert("RGB")
     # Convert the single image to a batch (size 1)
@@ -71,11 +99,27 @@ def test_model_performance(image_path, target_path):
 
 # Compare two tensors and check if a specified percentage of elements are within a tolerance threshold
 def comparison(a, b, tol, threshold_percentage):
+    """
+    Compare two tensors and check if a specified percentage of elements are within a tolerance 
+    threshold.
+
+    Parameters:
+    - a (torch.Tensor): The first tensor for comparison.
+    - b (torch.Tensor): The second tensor for comparison.
+    - tol (float): The tolerance threshold for comparing elements.
+    - threshold_percentage (int): The minimum percentage of elements within the tolerance threshold 
+    for the comparison to be considered a match.
+
+    Returns:
+    - bool: True if the specified percentage of elements are within the tolerance 
+    threshold; False otherwise.
+    """
+
     # Calculate absolute differences between elements
     absolute_diff = torch.abs(a - b)
 
     # Check if the absolute differences meet the tolerance conditions
-    within_tolerance = (absolute_diff <= tol) 
+    within_tolerance = absolute_diff <= tol
 
     # Calculate the total number of elements in the tensor
     total_elements = a.numel()
