@@ -63,16 +63,4 @@ def draw_mask(image, target, score_thres=0.8):
         _image = cv2.cvtColor(_image, cv2.COLOR_RGB2BGR)
         _image = cv2.cvtColor(_image, cv2.COLOR_BGR2RGB)
 
-    # for i in range(len(_masks)):
-    #     if _scores[i] > score_thres:
-    #         # apply a randon color to each object
-    #         color = COLORS[random.randrange(0, len(COLORS))].tolist()
-    #
-    #         # draw the bounding boxes around the objects
-    #         # cv2.rectangle(_image, _boxes[i][0:2], _boxes[i][2:4], color=color, thickness=2)
-    #         # put the label text above the objects
-    #         cv2.putText(_image, label_names[i], (_boxes[i][0], _boxes[i][1]-10),
-    #                     cv2.FONT_HERSHEY_SIMPLEX, 1, color,
-    #                     thickness=1, lineType=cv2.LINE_AA)
-
     return _image/255

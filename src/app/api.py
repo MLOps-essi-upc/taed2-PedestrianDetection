@@ -135,7 +135,7 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         result = detect_pedestrians(img, score_thres)
 
         # Draw bounding boxes on the image using the provided function
-        img_with_bb = draw_segmentation_map(img, result)
+        img_with_bb = draw_mask(img, result)
 
         # Convert the NumPy array to a PIL Image
         img_with_bb_pil = Image.fromarray((img_with_bb * 255).astype('uint8'))
@@ -152,6 +152,9 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
 
         # Return the image as a file for download using StreamingResponse
         image_response = StreamingResponse(io.BytesIO(image_bytes), media_type="image/png")
+
+        # Delete image
+        os.remove(image_path)
 
         return image_response
         
@@ -191,10 +194,8 @@ def return_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
         }
 
         return response
+
     
-
-
-
 @app.post("/masks", tags=["mask"])
 def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
     """Detect pedestrians with masks and return image endpoint"""
@@ -218,23 +219,26 @@ def draw_mask(request: Request, image: UploadFile, score_thres: float = 0.8):
         result = detect_pedestrians(img, score_thres)
 
         # Draw bounding boxes on the image using the provided function
-        img_with_bb = draw_mask(img, result)
+        img_with_mask = draw_mask(img, result)
 
         # Convert the NumPy array to a PIL Image
-        img_with_bb_pil = Image.fromarray((img_with_bb * 255).astype('uint8'))
+        img_with_mask_pil = Image.fromarray((img_with_mask * 255).astype('uint8'))
 
         # Save the image to a temporary file
         image_path = "image.png"  # Choose an appropriate path and format
 
         # Save the PIL image to the specified path
-        img_with_bb_pil.save(image_path, "PNG")
+        img_with_mask_pil.save(image_path, "PNG")
 
         # Open the saved image file
         with open(image_path, "rb") as image_file:
             image_bytes = image_file.read()
 
         # Return the image as a file for download using StreamingResponse
-        image_response = StreamingResponse(io.BytesIO(image_bytes), media_type="image/png")
+        image_response = StreamingResponse(
+            io.BytesIO(image_bytes), media_type="image/png")
+
+        # Delete image
+        os.remove(image_path)
 
         return image_response
-    
