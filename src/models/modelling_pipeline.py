@@ -85,7 +85,7 @@ model.to(device)
 mlflow.set_experiment("Pipeline retraining")
 tracker.start()
 train_mlflow(model, data_loader, data_loader_val, num_epochs=training_epochs, hidden_layer=hidden_layer,
-             batch_size_train=batch_size_train, name="baseline", device=device)
+             batch_size_train=batch_size_train, name="baseline", device=device, emissions_file="emissions_retraining.csv")
 tracker.stop()
 
 torch.save(model, os.path.join(root_dir, 'models/baseline_retrain.pth')) # es sobreescriu

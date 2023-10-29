@@ -18,8 +18,7 @@ sys.path.insert(1, os.path.join(root_dir, 'src/features'))
 from engine import train_one_epoch, evaluate
 
 
-
-def evaluation_mflow(name_run, data_loader_val, model, device):
+def evaluation_mflow(name_run, data_loader_val, model, device, emissions_file = "emissions.csv"):
     """
     Perform evaluation of a model using MLflow.
 
@@ -49,7 +48,7 @@ def evaluation_mflow(name_run, data_loader_val, model, device):
     })
 
     # Log the CO2 emissions to MLflow
-    emissions = pd.read_csv("emissions.csv")
+    emissions = pd.read_csv(emissions_file)
     emissions_metrics = emissions.iloc[-1, 4:13].to_dict()
     emissions_params = emissions.iloc[-1, 13:].to_dict()
     mlflow.log_params(emissions_params)
@@ -60,7 +59,7 @@ def evaluation_mflow(name_run, data_loader_val, model, device):
 
 
 def train_mlflow(model, data_loader, data_loader_val, num_epochs, hidden_layer,
-                 batch_size_train, name, device):
+                 batch_size_train, name, device, emissions_file="emissions.csv"):
     """
     Train a model and log training metrics and parameters to MLflow.
 
@@ -137,7 +136,7 @@ def train_mlflow(model, data_loader, data_loader_val, num_epochs, hidden_layer,
         lr_scheduler.step()
 
     # Log the CO2 emissions to MLflow
-    emissions = pd.read_csv("emissions.csv")
+    emissions = pd.read_csv(emissions_file)
     emissions_metrics = emissions.iloc[-1, 4:13].to_dict()
     emissions_params = emissions.iloc[-1, 13:].to_dict()
     mlflow.log_params(emissions_params)

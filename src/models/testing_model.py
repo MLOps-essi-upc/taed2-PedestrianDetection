@@ -56,5 +56,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 final_model = torch.load(os.path.join(root_dir, 'models/baseline.pth'), map_location=device)
 
 
-evaluation_mflow('test', data_loader_test, final_model, device)
+evaluation_mflow('test', data_loader_test, final_model, device,
+                 emissions_file="emissions_retraining.csv")
 tracker.stop()
