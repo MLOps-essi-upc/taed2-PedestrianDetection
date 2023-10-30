@@ -1,14 +1,14 @@
 schema: '2.0'
 stages:
   download_data:
-    cmd: python ./src/features/data_downloading.py
+    cmd: python ./src/data/data_downloading.py
     deps:
-    - path: ./src/features/data_downloading.py
+    - path: ./src/data/data_downloading.py
       hash: md5
       md5: 4de058654bd4653f4aff65c643b73d70
       size: 3170
     outs:
-    - path: ./data/raw/Dataset_FudanPed/PNGImages
+    - path: ./data/raw/Dataset_FudanPed/PNGImages/
       hash: md5
       md5: 67061f15dfc0e1ffdeb8ff12bdefd690.dir
       size: 53234523
@@ -19,9 +19,9 @@ stages:
       size: 429920
       nfiles: 170
   preprocessing_data:
-    cmd: python ./src/features/data_preprocessing.py
+    cmd: python ./src/data/data_preprocessing.py
     deps:
-    - path: ./data/raw/Dataset_FudanPed/PNGImages
+    - path: ./data/raw/Dataset_FudanPed/PNGImages/
       hash: md5
       md5: 67061f15dfc0e1ffdeb8ff12bdefd690.dir
       size: 53234523
@@ -31,7 +31,7 @@ stages:
       md5: c8cb959f7d9979777c05034a4b57e704.dir
       size: 429920
       nfiles: 170
-    - path: ./src/features/data_preprocessing.py
+    - path: ./src/data/data_preprocessing.py
       hash: md5
       md5: 8d835d657e04b3e59c8a52fdbca06184
       size: 5052

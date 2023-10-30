@@ -1,1 +1,1 @@
-{}
+{"read": {"C:\\Users\\rodri\\taed2-PedestrianDetection\\src\\models\\modelling_pipeline.py": [{"pid": 65412, "cmd": "C:\\Program Files (x86)\\DVC (Data Version Control)\\dvc.exe repro"}], "C:\\Users\\rodri\\taed2-PedestrianDetection\\src\\models\\modelling.py": [{"pid": 65412, "cmd": "C:\\Program Files (x86)\\DVC (Data Version Control)\\dvc.exe repro"}], "C:\\Users\\rodri\\taed2-PedestrianDetection\\params.yaml": [{"pid": 65412, "cmd": "C:\\Program Files (x86)\\DVC (Data Version Control)\\dvc.exe repro"}]}}

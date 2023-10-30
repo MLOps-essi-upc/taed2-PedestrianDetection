@@ -3,17 +3,17 @@ Module Name: modelling.py
 
 This module provides utility functions for training and evaluating models with MLflow integration.
 """
-
-import torch
-import mlflow
-import mlflow.pytorch
-import pandas as pd
-import os 
+import os
 import sys
 
 
+import mlflow
+import mlflow.pytorch
+import pandas as pd
+import torch
+
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
-sys.path.insert(1, os.path.join(root_dir, 'src/features'))
+sys.path.insert(1, os.path.join(root_dir, 'src/data'))
 
 from engine import train_one_epoch, evaluate
 
@@ -84,7 +84,7 @@ def train_mlflow(model, data_loader, data_loader_val, num_epochs, hidden_layer,
     params = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(params, lr=0.005,
                                 momentum=0.9, weight_decay=0.0005)
-    
+
     # and a learning rate scheduler which decreases the learning rate by
     # 10x every 3 epochs
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer,

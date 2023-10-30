@@ -4,13 +4,13 @@ stages:
     deps:
     - ./src/data/data_downloading.py
     outs:
-    - ./data/raw/Dataset_FudanPed/PNGImages
+    - ./data/raw/Dataset_FudanPed/PNGImages/
     - ./data/raw/Dataset_FudanPed/PedMasks/
   preprocessing_data:
     cmd: python ./src/data/data_preprocessing.py
     deps:
     - ./src/data/data_preprocessing.py
-    - ./data/raw/Dataset_FudanPed/PNGImages
+    - ./data/raw/Dataset_FudanPed/PNGImages/
     - ./data/raw/Dataset_FudanPed/PedMasks/    
     params:
     - preprocessing_data.seed
@@ -18,4 +18,25 @@ stages:
     - preprocessing_data.validation_size
     - preprocessing_data.testing_size
     outs:
+    - ./data/processed/training_dataset.pkl
+    - ./data/processed/validation_dataset.pkl
+    - ./data/processed/testing_dataset.pkl
+  validate_data_gx:
+    cmd: python ./src/data/validate.py
+    deps:
+    - ./src/data/validate.py
+    - ./data/processed/training_dataset.pkl
+    - ./data/processed/validation_dataset.pkl
+    - ./data/processed/testing_dataset.pkl
+  modelling:
+    cmd: python ./src/models/modelling_pipeline.py
+    deps:
+    - ./src/models/modelling_pipeline.py
     - ./data/processed/
+    - ./src/models/modelling.py 
+    params:
+    - modelling.batch_size_train
+    - modelling.hidden_layer
+    - modelling.training_epochs
+    outs:
+    - ./metrics/emissions.csv
