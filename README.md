@@ -20,10 +20,9 @@ Project Organization
 ------------
 
     ├── LICENSE
-    ├── README.md             <- The top-level README for developers using this project.
+    ├── README.md                       <- The top-level README for developers using this project
+    │
     ├── .dvc
-    │   ├── cache/files/md5 (CARPETA INVESTIGAR)
-    │   ├── tmp (CARPETA INVESTIGAR)
     │   ├── .gitignore
     │   └── config
     ├── .coverage
@@ -31,52 +30,97 @@ Project Organization
     ├── .gitignore
     │
     ├── data
-    │   ├── processed         <- The final, canonical data sets for modeling
-    │   ├── raw               <- The original, immutable data dump
     │   ├── .gitignore
-    │   ├── dataset-card.md   <- Dataset card containing dataset information
+    │   ├── processed                   <- The final, canonical data sets for modeling  (MIRAR)
+    │   ├── raw                         <- The original, immutable data dump
+    │       ├── .gitignore
+    │   ├── dataset-card.md             <- Dataset card containing dataset information
     │
     ├── dvc.lock 
     ├── dvc.yaml
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── gx                              <- Great Expectations configuration and tests folder
+    │   ├── .gitignore
+    │   ├── checkpoints
+    │   │   └── my_checkpoint.yml
+    │   ├── expectations
+    │   │   └── .ge_store_backend_id
+    │   │   └── pennfundan-training_suite.json
+    │   ├── plugins/custom_data_docs/styles
+    │   │   └── data_docs_custom_styles.css
+    │   ├── uncommitted
+    │   │   ├── data_docs/local_site
+    │   │   │   ├── index.html          <- Great Expectations results
+    │   │   ├── validation
+    │   │   └── config_variables.yml
+    │   └── great_expectations.yml
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── metrics                         <- Metrics folder
+    │   └── emissions.csv
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    ├── models                          <- Trained and serialized models
+    │   ├── .gitignore
+    │   ├── Structure of model Mask R-CNN.png
+    │   ├── baseline.pth.dvc
+    │   ├── model-card.md               <- Model card containing model information
+    │   └── other_trained_models.dvc
+    │
+    ├── notebooks                       <- Jupyter notebooks for exploration
+    │   ├── .gitignore
+    │   ├── 1.0-rb-data_processing.ipynb
+    │   └── 1.0-cmp-modelling_pipeline.ipynb
     │
     ├── params.yaml  
     ├── pyproject.toml  
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── requirements.txt                <- The requirements file for reproducing the analysis 
+    │                                   environment, generated with `pip freeze > requirements.txt`
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment,
-    │                         generated with `pip freeze > requirements.txt`
+    ├── setup.py                        <- makes project pip installable so src can be imported
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
+    ├── src                             <- Source code for use in this project
+    │   ├── .gitignore                       
+    │   ├── app                         <- FastAPI app directory
+    │   │   ├── api.py
+    │   │   ├── draw_mask_map.py
+    │   │   └── draw_segmentation_map.py
     │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
+    │   ├── data                        <- Scripts to download or generate data
+    │   │   ├── .gitignore
+    │   │   ├── coco_eval.py
+    │   │   ├── coco_utils.py
+    │   │   ├── data_downloading.py
+    │   │   ├── data_preprocessing.py
+    │   │   ├── engine.py
+    │   │   ├── pedestrian_dataset_class.py
+    │   │   ├── transforms.py
+    │   │   ├── utils.py
+    │   │   └── validate.py
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
+    │   ├── features                    <- Scripts to turn raw data into features for modeling
+    │   │   ├── .gitignore
+    │   │   ├── 
+    │   │   └── 
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │   └── models                      <- Scripts to train models
+    │       ├── .gitingore
+    │       ├── data.py
+    │       ├── modelling.py
+    │       ├── modelling_pipeline.py
+    │       └── testing_model.py
+    │
+    ├── tests                           <- PyTest testing scripts
+    │   ├── .gitignore
+    │   ├── out
+    │   │   └── tests-report.xml
+    │   ├── __init__.py
+    │   ├── test_api.py
+    │   ├── test_models.py
+    │   ├── test_negative_det.py
+    │   └── test_positive_det.py
     │
     ├── test_environtment.py   
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    └── tox.ini                         <- tox file with settings for running tox
 
 
 --------
