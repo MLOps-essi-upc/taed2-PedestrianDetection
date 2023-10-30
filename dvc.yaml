@@ -1,21 +1,49 @@
 stages:
   download_data:
-    cmd: python ./src/data/data_downloading.py
+    cmd: python3 ./src/data/data_downloading.py
     deps:
     - ./src/data/data_downloading.py
     outs:
-    - ./data/raw/Dataset_FudanPed/PNGImages
+    - ./data/raw/Dataset_FudanPed/PNGImages/
     - ./data/raw/Dataset_FudanPed/PedMasks/
   preprocessing_data:
-    cmd: python ./src/data/data_preprocessing.py
+    cmd: python3 ./src/data/data_preprocessing.py
     deps:
     - ./src/data/data_preprocessing.py
-    - ./data/raw/Dataset_FudanPed/PNGImages
-    - ./data/raw/Dataset_FudanPed/PedMasks/    
+    - ./data/raw/Dataset_FudanPed/PNGImages/
+    - ./data/raw/Dataset_FudanPed/PedMasks/
     params:
     - preprocessing_data.seed
     - preprocessing_data.training_size
     - preprocessing_data.validation_size
     - preprocessing_data.testing_size
     outs:
+    - ./data/processed/training_dataset.pkl
+    - ./data/processed/validation_dataset.pkl
+    - ./data/processed/testing_dataset.pkl
+  validate_data_gx:
+    cmd: python3 ./src/data/validate.py
+    deps:
+    - ./src/data/validate.py
+    - ./data/processed/training_dataset.pkl
+    - ./data/processed/validation_dataset.pkl
+    - ./data/processed/testing_dataset.pkl
+  modelling:
+    cmd: python3 ./src/models/modelling_pipeline.py
+    deps:
+    - ./src/models/modelling_pipeline.py
     - ./data/processed/
+    - ./src/models/modelling.py
+    params:
+    - modelling.batch_size_train
+    - modelling.hidden_layer
+    - modelling.training_epochs
+    outs:
+    - ./models/baseline_retrain.pth
+  testing_model:
+    cmd: python3 ./src/models/testing_model.py
+    deps:
+    - ./src/models/testing_model.py
+    - ./data/processed/
+    - ./src/models/modelling.py
+    - ./models/baseline_retrain.pth

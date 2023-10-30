@@ -7,11 +7,14 @@ The data will be loaded, augmented and saved in the established folders.
 import pickle
 import os
 import random
+import sys
 
 import dvc.api
 import torch
 import torch.utils.data
 from torch.utils.data import ConcatDataset
+
+sys.path.insert(1, os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')), 'vision'))
 
 import transforms as T
 import pedestrian_dataset_class

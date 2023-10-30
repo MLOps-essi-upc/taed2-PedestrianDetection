@@ -3,3 +3,7 @@ preprocessing_data:
   training_size: 0.41
   validation_size: 0.295
   testing_size: 0.295
+modelling:
+  batch_size_train: 2
+  hidden_layer: 256
+  training_epochs: 3
