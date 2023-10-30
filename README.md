@@ -127,4 +127,4 @@ Project Organization
 Considerations for execution
 ------------
 
-It is extremely important that the user executing the code from this repository has his own kaggle credentials in the correct folder. It is also important to note that if the user is not a member of the DagsHub repository he will not have the necessary credential to run MLFlow experiments. If these requirements are not met, the code will not function correctly.
+It is extremely important that the user executing the code from this repository has his own kaggle credentials in the correct folder. It is also important to note that if the user is not a member of the DagsHub repository he will not have the necessary credentials to run MLFlow experiments. If these requirements are not met, the code will not function correctly.
