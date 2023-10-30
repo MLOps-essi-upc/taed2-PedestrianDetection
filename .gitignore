@@ -10,3 +10,5 @@ config.ini
 #Python
 __pycache__/
 
+#R
+.Rhistory
