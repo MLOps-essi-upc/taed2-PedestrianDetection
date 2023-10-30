@@ -4,7 +4,6 @@ Module Name: modelling_pipeline.py
 This module provides a pipeline for fine tunning a model using MLflow integration.
 """
 import configparser
-# import getpass
 import os
 import sys
 
@@ -23,9 +22,11 @@ from data import load_data
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
 sys.path.insert(1, os.path.join(root_dir, 'src/vision'))
+sys.path.insert(1, os.path.join(root_dir, 'src/data'))
 
-# from pedestrian_dataset_class import PedestrianDataset
-# from engine import train_one_epoch, evaluate
+
+from pedestrian_dataset_class import PedestrianDataset
+from engine import train_one_epoch, evaluate
 import utils
 
 

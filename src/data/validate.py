@@ -6,9 +6,15 @@ The data will be validated using Great Expectations.
 """
 import os
 import pickle
+import sys
 
 import great_expectations as gx
 import pandas as pd
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
+sys.path.insert(1, os.path.join(root_dir, 'src/vision'))
+
+import transforms as T
 
 # from src import ROOT_DIR
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))

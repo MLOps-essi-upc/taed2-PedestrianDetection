@@ -13,7 +13,7 @@ import pandas as pd
 import torch
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
-sys.path.insert(1, os.path.join(root_dir, 'src/data'))
+sys.path.insert(1, os.path.join(root_dir, 'src/vision'))
 
 from engine import train_one_epoch, evaluate
 

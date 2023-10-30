@@ -33,8 +33,8 @@ stages:
       nfiles: 170
     - path: ./src/data/data_preprocessing.py
       hash: md5
-      md5: 8d835d657e04b3e59c8a52fdbca06184
-      size: 5052
+      md5: a8b815dda536f0095084fd740e5df2c5
+      size: 5175
     params:
       params.yaml:
         preprocessing_data.seed: 44
@@ -42,8 +42,34 @@ stages:
         preprocessing_data.training_size: 0.41
         preprocessing_data.validation_size: 0.295
     outs:
-    - path: ./data/processed/
+    - path: ./data/processed/testing_dataset.pkl
       hash: md5
-      md5: 3ab61b1a140a4ff94086de58634e3f3e.dir
-      size: 50692
-      nfiles: 3
+      md5: 1359e8308a7fec20394591ed6d41150e
+      size: 8508
+    - path: ./data/processed/training_dataset.pkl
+      hash: md5
+      md5: 960751a8476543c15dcde8486167f8de
+      size: 33676
+    - path: ./data/processed/validation_dataset.pkl
+      hash: md5
+      md5: bc907deee0dcd6ee630b5f18b9d26c6e
+      size: 8508
+  validate_data_gx:
+    cmd: python ./src/data/validate.py
+    deps:
+    - path: ./data/processed/testing_dataset.pkl
+      hash: md5
+      md5: 1359e8308a7fec20394591ed6d41150e
+      size: 8508
+    - path: ./data/processed/training_dataset.pkl
+      hash: md5
+      md5: 960751a8476543c15dcde8486167f8de
+      size: 33676
+    - path: ./data/processed/validation_dataset.pkl
+      hash: md5
+      md5: bc907deee0dcd6ee630b5f18b9d26c6e
+      size: 8508
+    - path: ./src/data/validate.py
+      hash: md5
+      md5: 6264fc118bfd4dde11b0ad76238413c2
+      size: 3330

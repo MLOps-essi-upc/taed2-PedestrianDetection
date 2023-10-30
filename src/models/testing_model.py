@@ -20,6 +20,7 @@ sys.path.insert(1, os.path.join(root_dir, 'src/vision'))
 
 import utils
 
+
 # Download preprocessed data
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'*2))
 DATA_FOLDER = os.path.join(root_dir, 'data/processed')
