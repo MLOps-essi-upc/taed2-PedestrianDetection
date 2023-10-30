@@ -87,20 +87,18 @@ Project Organization
     │   │
     │   ├── data                        <- Scripts to download or generate data
     │   │   ├── .gitignore
-    │   │   ├── coco_eval.py
-    │   │   ├── coco_utils.py
     │   │   ├── data_downloading.py
     │   │   ├── data_preprocessing.py
-    │   │   ├── engine.py
     │   │   ├── pedestrian_dataset_class.py
-    │   │   ├── transforms.py
-    │   │   ├── utils.py
     │   │   └── validate.py
     │   │
-    │   ├── features                    <- Scripts to turn raw data into features for modeling
+    │   ├── vision                      <- Scripts from torchvision repository
     │   │   ├── .gitignore
-    │   │   ├── 
-    │   │   └── 
+    │   │   ├── coco_eval.py
+    │   │   ├── coco_utils.py
+    │   │   ├── engine.py
+    │   │   ├── utils.py
+    │   │   └──  transforms.py
     │   │
     │   └── models                      <- Scripts to train models
     │       ├── .gitingore
@@ -113,7 +111,6 @@ Project Organization
     │   ├── .gitignore
     │   ├── out
     │   │   └── tests-report.xml
-    │   ├── __init__.py
     │   ├── test_api.py
     │   ├── test_models.py
     │   ├── test_negative_det.py
