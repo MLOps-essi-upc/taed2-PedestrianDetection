@@ -33,8 +33,8 @@ Project Organization
     │   ├── .gitignore
     │   ├── processed                   <- The final, canonical data sets for modeling  (MIRAR)
     │   ├── raw                         <- The original, immutable data dump
-    │       ├── .gitignore
-    │   ├── dataset-card.md             <- Dataset card containing dataset information
+    │       └── .gitignore
+    │   └── dataset-card.md             <- Dataset card containing dataset information
     │
     ├── dvc.lock 
     ├── dvc.yaml
@@ -44,7 +44,7 @@ Project Organization
     │   ├── checkpoints
     │   │   └── my_checkpoint.yml
     │   ├── expectations
-    │   │   └── .ge_store_backend_id
+    │   │   ├── .ge_store_backend_id
     │   │   └── pennfundan-training_suite.json
     │   ├── plugins/custom_data_docs/styles
     │   │   └── data_docs_custom_styles.css
