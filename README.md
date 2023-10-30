@@ -31,9 +31,8 @@ Project Organization
     │
     ├── data
     │   ├── .gitignore
-    │   ├── processed                   <- The final, canonical data sets for modeling  (MIRAR)
     │   ├── raw                         <- The original, immutable data dump
-    │       └── .gitignore
+    │   │   └── .gitignore
     │   └── dataset-card.md             <- Dataset card containing dataset information
     │
     ├── dvc.lock 
@@ -92,20 +91,20 @@ Project Organization
     │   │   ├── pedestrian_dataset_class.py
     │   │   └── validate.py
     │   │
-    │   ├── vision                      <- Scripts from torchvision repository
-    │   │   ├── .gitignore
-    │   │   ├── coco_eval.py
-    │   │   ├── coco_utils.py
-    │   │   ├── engine.py
-    │   │   ├── transforms.py
-    │   │   └── utils.py
+    │   ├──models                      <- Scripts to train models
+    │   │   ├── .gitingore
+    │   │   ├── data.py
+    │   │   ├── modelling.py
+    │   │   ├── modelling_pipeline.py
+    │   │   └── testing_model.py
     │   │
-    │   └── models                      <- Scripts to train models
-    │       ├── .gitingore
-    │       ├── data.py
-    │       ├── modelling.py
-    │       ├── modelling_pipeline.py
-    │       └── testing_model.py
+    │   └── vision                      <- Scripts from torchvision repository
+    │       ├── .gitignore
+    │       ├── coco_eval.py
+    │       ├── coco_utils.py
+    │       ├── engine.py
+    │       ├── transforms.py
+    │       └── utils.py
     │
     ├── tests                           <- PyTest testing scripts
     │   ├── .gitignore
