@@ -4,6 +4,15 @@ REQUIRED_PYTHON = "python3"
 
 
 def main():
+    """
+    Check if the system's Python version matches the required version.
+
+    This function checks the major version of the Python interpreter currently running
+    on the system and compares it to the required major version specified in the
+    REQUIRED_PYTHON constant. If the versions do not match, a TypeError is raised.
+    If they match, a success message is printed.
+    """
+    
     system_major = sys.version_info.major
     if REQUIRED_PYTHON == "python":
         required_major = 2
