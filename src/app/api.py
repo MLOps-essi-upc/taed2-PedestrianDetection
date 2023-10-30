@@ -61,8 +61,6 @@ def detect_pedestrians(img, score_thres: float):
     return output
 
 
-
-
 def construct_response(f):
     """Decorator to construct a JSON response for an endpoint's results"""
 
@@ -99,11 +97,9 @@ def _load_model():
     app.state.model = model
 
 
-
-
 @app.get("/", tags=["General"])
 @construct_response
-def welcome():
+def welcome(request: Request):
     """Root endpoint with a welcome message"""
 
     response = {
@@ -120,7 +116,7 @@ def draw_bb(request: Request, image: UploadFile, score_thres: float = 0.8):
     """Detect pedestrians with bounding boxes and return an image endpoint"""
 
     # Raise exception when input is not in the right format
-    if not 0.0 <= score_thres <= 1.0: # we are sure it is a float because function's input type
+    if not 0.0 <= score_thres <= 1.0:  # we are sure it is a float because function's input type
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             detail="score_thres must be a number between 0 and 1")
 
