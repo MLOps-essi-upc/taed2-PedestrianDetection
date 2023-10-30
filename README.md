@@ -20,18 +20,21 @@ Project Organization
 ------------
 
     ├── LICENSE
-    ├── README.md          <- The top-level README for developers using this project.
+    ├── README.md             <- The top-level README for developers using this project.
     ├── .dvc
-    │   ├── .gitignore
-    │   └── config
+    │   ├── cache/files/md5 (CARPETA INVESTIGAR)
+    │   ├── tmp (CARPETA INVESTIGAR)
+    │   ├── .gitignore
+    │   └── config
     ├── .coverage
     ├── .dvcignore
     ├── .gitignore
+    │
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── processed         <- The final, canonical data sets for modeling
+    │   ├── raw               <- The original, immutable data dump
+    │   ├── .gitignore
+    │   ├── dataset-card.md   <- Dataset card containing dataset information
     │
     ├── dvc.lock 
     ├── dvc.yaml
