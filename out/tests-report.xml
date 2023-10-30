@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="18" time="327.334" timestamp="2023-10-30T22:40:37.502318" hostname="MacBook-Pro-de-Claudia.local"><testcase classname="tests.test_api" name="test_welcome" time="0.019"><failure message="TypeError: welcome() missing 1 required positional argument: 'request'">def test_welcome():
+        """
+        Test the welcome endpoint of the API.
+    
+        Sends a GET request to the root endpoint and checks if the response is as expected.
+        """
+    
+&gt;       response = client.get("/")
+
+tests/test_api.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.10/site-packages/starlette/testclient.py:499: in get
+    return super().get(
+/usr/local/lib/python3.10/site-packages/httpx/_client.py:1041: in get
+    return self.request(
+/usr/local/lib/python3.10/site-packages/starlette/testclient.py:465: in request
+    return super().request(
+/usr/local/lib/python3.10/site-packages/httpx/_client.py:814: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+/usr/local/lib/python3.10/site-packages/httpx/_client.py:901: in send
+    response = self._send_handling_auth(
+/usr/local/lib/python3.10/site-packages/httpx/_client.py:929: in _send_handling_auth
+    response = self._send_handling_redirects(
+/usr/local/lib/python3.10/site-packages/httpx/_client.py:966: in _send_handling_redirects
+    response = self._send_single_request(request)
+/usr/local/lib/python3.10/site-packages/httpx/_client.py:1002: in _send_single_request
+    response = transport.handle_request(request)
+/usr/local/lib/python3.10/site-packages/starlette/testclient.py:342: in handle_request
+    raise exc
+/usr/local/lib/python3.10/site-packages/starlette/testclient.py:339: in handle_request
+    portal.call(self.app, scope, receive, send)
+/usr/local/lib/python3.10/site-packages/anyio/from_thread.py:277: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/concurrent/futures/_base.py:458: in result
+    return self.__get_result()
+/usr/local/Cellar/python@3.10/3.10.6_2/Frameworks/Python.framework/Versions/3.10/lib/python3.10/concurrent/futures/_base.py:403: in __get_result
+    raise self._exception
+/usr/local/lib/python3.10/site-packages/anyio/from_thread.py:217: in _call_func
+    retval = await retval
+/usr/local/lib/python3.10/site-packages/fastapi/applications.py:1115: in __call__
+    await super().__call__(scope, receive, send)
+/usr/local/lib/python3.10/site-packages/starlette/applications.py:122: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.10/site-packages/starlette/middleware/errors.py:184: in __call__
+    raise exc
+/usr/local/lib/python3.10/site-packages/starlette/middleware/errors.py:162: in __call__
+    await self.app(scope, receive, _send)
+/usr/local/lib/python3.10/site-packages/starlette/middleware/exceptions.py:79: in __call__
+    raise exc
+/usr/local/lib/python3.10/site-packages/starlette/middleware/exceptions.py:68: in __call__
+    await self.app(scope, receive, sender)
+/usr/local/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py:20: in __call__
+    raise e
+/usr/local/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py:17: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.10/site-packages/starlette/routing.py:718: in __call__
+    await route.handle(scope, receive, send)
+/usr/local/lib/python3.10/site-packages/starlette/routing.py:276: in handle
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.10/site-packages/starlette/routing.py:66: in app
+    response = await func(request)
+/usr/local/lib/python3.10/site-packages/fastapi/routing.py:274: in app
+    raw_response = await run_endpoint_function(
+/usr/local/lib/python3.10/site-packages/fastapi/routing.py:193: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+/usr/local/lib/python3.10/site-packages/starlette/concurrency.py:41: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+/usr/local/lib/python3.10/site-packages/anyio/to_thread.py:33: in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+/usr/local/lib/python3.10/site-packages/anyio/_backends/_asyncio.py:877: in run_sync_in_worker_thread
+    return await future
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;WorkerThread(AnyIO worker thread, stopped 123145375895552)&gt;
+
+    def run(self) -&gt; None:
+        with claim_worker_thread("asyncio"):
+            threadlocals.loop = self.loop
+            while True:
+                item = self.queue.get()
+                if item is None:
+                    # Shutdown command received
+                    return
+    
+                context, func, args, future = item
+                if not future.cancelled():
+                    result = None
+                    exception: BaseException | None = None
+                    try:
+&gt;                       result = context.run(func, *args)
+E                       TypeError: welcome() missing 1 required positional argument: 'request'
+
+/usr/local/lib/python3.10/site-packages/anyio/_backends/_asyncio.py:807: TypeError</failure></testcase><testcase classname="tests.test_api" name="test_return_bb" time="4.124" /><testcase classname="tests.test_api" name="test_draw_bb" time="53.203"><failure message="assert array([[ True,  True, False,  True,  True, False, False,  True],\n       [False,  True, False,  True,  True, False, Fal...ue, False, False,  True,  True, False, False,  True],\n       [ True,  True,  True, False,  True, False, False,  True]]) == array([[ True,  True, False,  True,  True, False, False,  True],\n       [False,  True, False,  True,  True, False, Fal...ue, False, False,  True,  True, False, False,  True],\n       [ True,  True,  True, False, False, False, False,  True]])">def test_draw_bb():
+        """
+        Test the /draw_bb endpoint of the API.
+    
+        Sends a POST request with an image file to the /draw_bb endpoint and checks if the response
+        contains a PNG image with bounding boxes drawn on it.
+        """
+    
+        with open(test_image_path, "rb") as image_file:
+            files = {"image": ("african.jpeg", image_file)}
+            response = client.post("/bb_draw", files=files)
+            assert response.status_code == 200
+            assert response.headers["content-type"] == "image/png"
+    
+            # Load the generated image
+            generated_image = Image.open(io.BytesIO(response.content))
+    
+            # Load the expected image
+            expected_image = Image.open(expected_bb_image_path)
+    
+            # Calculate the perceptual hash for the generated and expected images
+            hash_generated = imagehash.phash(generated_image)
+            hash_expected = imagehash.phash(expected_image)
+            # Compare the generated and expected images
+            # structural comparison rather than pixel-by-pixel because the bb have different colors
+&gt;           assert hash_generated == hash_expected
+E           assert array([[ True,  True, False,  True,  True, False, False,  True],\n       [False,  True, False,  True,  True, False, Fal...ue, False, False,  True,  True, False, False,  True],\n       [ True,  True,  True, False,  True, False, False,  True]]) == array([[ True,  True, False,  True,  True, False, False,  True],\n       [False,  True, False,  True,  True, False, Fal...ue, False, False,  True,  True, False, False,  True],\n       [ True,  True,  True, False, False, False, False,  True]])
+
+tests/test_api.py:133: AssertionError</failure></testcase><testcase classname="tests.test_api" name="test_draw_masks" time="57.466" /><testcase classname="tests.test_api" name="test_invalid_images" time="0.042" /><testcase classname="tests.test_api" name="test_invalid_score_thres" time="165.760" /><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lying.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lying_output.pth]" time="3.045"><failure message="AssertionError: Number of predictions does not match&#10;assert 2 == 1&#10; +  where 2 = len(tensor([0.6364, 0.0802], grad_fn=&lt;IndexBackward0&gt;))&#10; +  and   1 = len(tensor([0.9814]))">image_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lying.jpeg', target_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lying_output.pth'
+
+    @pytest.mark.parametrize(
+        "image_path, target_path",
+        [(os.path.join(root_dir, 'tests/img_test/lying.jpeg'), os.path.join(root_dir, 'tests/img_test/lying_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/night.jpeg'), os.path.join(root_dir, 'tests/img_test/night_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/sun_glare.jpeg'), os.path.join(root_dir, 'tests/img_test/sun_glare_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/weelchair.jpeg'), os.path.join(root_dir, 'tests/img_test/weelchair_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/kid.png'), os.path.join(root_dir, 'tests/img_test/kid_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/african.jpeg'), os.path.join(root_dir, 'tests/img_test/african_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle_tunnel.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_tunnel_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/lot_of_people.jpeg'), os.path.join(root_dir, 'tests/img_test/lot_of_people_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bluring.jpeg'), os.path.join(root_dir, 'tests/img_test/bluring_output.pth'))]
+    )
+    
+    
+    
+    def test_model_performance(image_path, target_path):
+        """
+        Test the performance of the Pedestrian Detection model on various test images.
+        It loads the provided image and target, makes predictions using the loaded model, and checks
+        the predictions against the expected target values. The test evaluates the model's performance
+        by comparing predicted bounding boxes and masks with the expected target values.
+    
+        Parameters:
+        - image_path (str): The path to the test image.
+        - target_path (str): The path to the corresponding target result for the test image.
+    
+        Raises:
+        - AssertionError: If the model's predictions do not match the expected target values.
+        """
+    
+        # Load the image and target
+        image = Image.open(image_path).convert("RGB")
+        # Convert the single image to a batch (size 1)
+        image = [transforms.ToTensor()(image).to(device)]
+        target = torch.load(target_path, map_location=device)
+    
+        # Get model predictions for the input image
+        predictions = model(image)[0]
+    
+    
+        # Check if the predictions are empty or not --&gt; nothing to compare
+        if not predictions['boxes'].shape[0] and not target['boxes'].shape[0]:
+            return
+    
+        # Filter out predictions with scores lower than the threshold
+        score_threshold = 0.8
+        above_threshold = predictions['scores'] &gt;= score_threshold
+        predictions['boxes'] = predictions['boxes'][above_threshold]
+        predictions['masks'] = predictions['masks'][above_threshold]
+    
+        # Check the number of predictions
+&gt;       assert len(predictions['scores']) == len(
+            target['scores']), "Number of predictions does not match"
+E       AssertionError: Number of predictions does not match
+E       assert 2 == 1
+E        +  where 2 = len(tensor([0.6364, 0.0802], grad_fn=&lt;IndexBackward0&gt;))
+E        +  and   1 = len(tensor([0.9814]))
+
+tests/test_models.py:86: AssertionError</failure></testcase><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/night.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/night_output.pth]" time="3.073" /><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/sun_glare.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/sun_glare_output.pth]" time="2.987"><failure message="AssertionError: Number of predictions does not match&#10;assert 5 == 11&#10; +  where 5 = len(tensor([0.9981, 0.7470, 0.5005, 0.3985, 0.0565], grad_fn=&lt;IndexBackward0&gt;))&#10; +  and   11 = len(tensor([0.9876, 0.9845, 0.9825, 0.9741, 0.9683, 0.9614, 0.9572, 0.9388, 0.8663,\n        0.8653, 0.8651]))">image_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/sun_glare.jpeg'
+target_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/sun_glare_output.pth'
+
+    @pytest.mark.parametrize(
+        "image_path, target_path",
+        [(os.path.join(root_dir, 'tests/img_test/lying.jpeg'), os.path.join(root_dir, 'tests/img_test/lying_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/night.jpeg'), os.path.join(root_dir, 'tests/img_test/night_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/sun_glare.jpeg'), os.path.join(root_dir, 'tests/img_test/sun_glare_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/weelchair.jpeg'), os.path.join(root_dir, 'tests/img_test/weelchair_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/kid.png'), os.path.join(root_dir, 'tests/img_test/kid_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/african.jpeg'), os.path.join(root_dir, 'tests/img_test/african_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle_tunnel.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_tunnel_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/lot_of_people.jpeg'), os.path.join(root_dir, 'tests/img_test/lot_of_people_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bluring.jpeg'), os.path.join(root_dir, 'tests/img_test/bluring_output.pth'))]
+    )
+    
+    
+    
+    def test_model_performance(image_path, target_path):
+        """
+        Test the performance of the Pedestrian Detection model on various test images.
+        It loads the provided image and target, makes predictions using the loaded model, and checks
+        the predictions against the expected target values. The test evaluates the model's performance
+        by comparing predicted bounding boxes and masks with the expected target values.
+    
+        Parameters:
+        - image_path (str): The path to the test image.
+        - target_path (str): The path to the corresponding target result for the test image.
+    
+        Raises:
+        - AssertionError: If the model's predictions do not match the expected target values.
+        """
+    
+        # Load the image and target
+        image = Image.open(image_path).convert("RGB")
+        # Convert the single image to a batch (size 1)
+        image = [transforms.ToTensor()(image).to(device)]
+        target = torch.load(target_path, map_location=device)
+    
+        # Get model predictions for the input image
+        predictions = model(image)[0]
+    
+    
+        # Check if the predictions are empty or not --&gt; nothing to compare
+        if not predictions['boxes'].shape[0] and not target['boxes'].shape[0]:
+            return
+    
+        # Filter out predictions with scores lower than the threshold
+        score_threshold = 0.8
+        above_threshold = predictions['scores'] &gt;= score_threshold
+        predictions['boxes'] = predictions['boxes'][above_threshold]
+        predictions['masks'] = predictions['masks'][above_threshold]
+    
+        # Check the number of predictions
+&gt;       assert len(predictions['scores']) == len(
+            target['scores']), "Number of predictions does not match"
+E       AssertionError: Number of predictions does not match
+E       assert 5 == 11
+E        +  where 5 = len(tensor([0.9981, 0.7470, 0.5005, 0.3985, 0.0565], grad_fn=&lt;IndexBackward0&gt;))
+E        +  and   11 = len(tensor([0.9876, 0.9845, 0.9825, 0.9741, 0.9683, 0.9614, 0.9572, 0.9388, 0.8663,\n        0.8653, 0.8651]))
+
+tests/test_models.py:86: AssertionError</failure></testcase><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/weelchair.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/weelchair_output.pth]" time="3.220"><failure message="AssertionError: Number of predictions does not match&#10;assert 1 == 2&#10; +  where 1 = len(tensor([0.9503], grad_fn=&lt;IndexBackward0&gt;))&#10; +  and   2 = len(tensor([0.9966, 0.8722]))">image_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/weelchair.jpeg'
+target_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/weelchair_output.pth'
+
+    @pytest.mark.parametrize(
+        "image_path, target_path",
+        [(os.path.join(root_dir, 'tests/img_test/lying.jpeg'), os.path.join(root_dir, 'tests/img_test/lying_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/night.jpeg'), os.path.join(root_dir, 'tests/img_test/night_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/sun_glare.jpeg'), os.path.join(root_dir, 'tests/img_test/sun_glare_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/weelchair.jpeg'), os.path.join(root_dir, 'tests/img_test/weelchair_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/kid.png'), os.path.join(root_dir, 'tests/img_test/kid_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/african.jpeg'), os.path.join(root_dir, 'tests/img_test/african_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle_tunnel.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_tunnel_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/lot_of_people.jpeg'), os.path.join(root_dir, 'tests/img_test/lot_of_people_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bluring.jpeg'), os.path.join(root_dir, 'tests/img_test/bluring_output.pth'))]
+    )
+    
+    
+    
+    def test_model_performance(image_path, target_path):
+        """
+        Test the performance of the Pedestrian Detection model on various test images.
+        It loads the provided image and target, makes predictions using the loaded model, and checks
+        the predictions against the expected target values. The test evaluates the model's performance
+        by comparing predicted bounding boxes and masks with the expected target values.
+    
+        Parameters:
+        - image_path (str): The path to the test image.
+        - target_path (str): The path to the corresponding target result for the test image.
+    
+        Raises:
+        - AssertionError: If the model's predictions do not match the expected target values.
+        """
+    
+        # Load the image and target
+        image = Image.open(image_path).convert("RGB")
+        # Convert the single image to a batch (size 1)
+        image = [transforms.ToTensor()(image).to(device)]
+        target = torch.load(target_path, map_location=device)
+    
+        # Get model predictions for the input image
+        predictions = model(image)[0]
+    
+    
+        # Check if the predictions are empty or not --&gt; nothing to compare
+        if not predictions['boxes'].shape[0] and not target['boxes'].shape[0]:
+            return
+    
+        # Filter out predictions with scores lower than the threshold
+        score_threshold = 0.8
+        above_threshold = predictions['scores'] &gt;= score_threshold
+        predictions['boxes'] = predictions['boxes'][above_threshold]
+        predictions['masks'] = predictions['masks'][above_threshold]
+    
+        # Check the number of predictions
+&gt;       assert len(predictions['scores']) == len(
+            target['scores']), "Number of predictions does not match"
+E       AssertionError: Number of predictions does not match
+E       assert 1 == 2
+E        +  where 1 = len(tensor([0.9503], grad_fn=&lt;IndexBackward0&gt;))
+E        +  and   2 = len(tensor([0.9966, 0.8722]))
+
+tests/test_models.py:86: AssertionError</failure></testcase><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/kid.png-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/kid_output.pth]" time="2.942" /><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/african.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/african_output.pth]" time="4.144" /><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bicycle.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bicycle_output.pth]" time="2.863" /><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bicycle_tunnel.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bicycle_tunnel_output.pth]" time="2.371"><failure message="AssertionError: Number of predictions does not match&#10;assert 1 == 3&#10; +  where 1 = len(tensor([0.9918], grad_fn=&lt;IndexBackward0&gt;))&#10; +  and   3 = len(tensor([0.9977, 0.9636, 0.9507]))">image_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bicycle_tunnel.jpeg'
+target_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bicycle_tunnel_output.pth'
+
+    @pytest.mark.parametrize(
+        "image_path, target_path",
+        [(os.path.join(root_dir, 'tests/img_test/lying.jpeg'), os.path.join(root_dir, 'tests/img_test/lying_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/night.jpeg'), os.path.join(root_dir, 'tests/img_test/night_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/sun_glare.jpeg'), os.path.join(root_dir, 'tests/img_test/sun_glare_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/weelchair.jpeg'), os.path.join(root_dir, 'tests/img_test/weelchair_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/kid.png'), os.path.join(root_dir, 'tests/img_test/kid_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/african.jpeg'), os.path.join(root_dir, 'tests/img_test/african_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle_tunnel.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_tunnel_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/lot_of_people.jpeg'), os.path.join(root_dir, 'tests/img_test/lot_of_people_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bluring.jpeg'), os.path.join(root_dir, 'tests/img_test/bluring_output.pth'))]
+    )
+    
+    
+    
+    def test_model_performance(image_path, target_path):
+        """
+        Test the performance of the Pedestrian Detection model on various test images.
+        It loads the provided image and target, makes predictions using the loaded model, and checks
+        the predictions against the expected target values. The test evaluates the model's performance
+        by comparing predicted bounding boxes and masks with the expected target values.
+    
+        Parameters:
+        - image_path (str): The path to the test image.
+        - target_path (str): The path to the corresponding target result for the test image.
+    
+        Raises:
+        - AssertionError: If the model's predictions do not match the expected target values.
+        """
+    
+        # Load the image and target
+        image = Image.open(image_path).convert("RGB")
+        # Convert the single image to a batch (size 1)
+        image = [transforms.ToTensor()(image).to(device)]
+        target = torch.load(target_path, map_location=device)
+    
+        # Get model predictions for the input image
+        predictions = model(image)[0]
+    
+    
+        # Check if the predictions are empty or not --&gt; nothing to compare
+        if not predictions['boxes'].shape[0] and not target['boxes'].shape[0]:
+            return
+    
+        # Filter out predictions with scores lower than the threshold
+        score_threshold = 0.8
+        above_threshold = predictions['scores'] &gt;= score_threshold
+        predictions['boxes'] = predictions['boxes'][above_threshold]
+        predictions['masks'] = predictions['masks'][above_threshold]
+    
+        # Check the number of predictions
+&gt;       assert len(predictions['scores']) == len(
+            target['scores']), "Number of predictions does not match"
+E       AssertionError: Number of predictions does not match
+E       assert 1 == 3
+E        +  where 1 = len(tensor([0.9918], grad_fn=&lt;IndexBackward0&gt;))
+E        +  and   3 = len(tensor([0.9977, 0.9636, 0.9507]))
+
+tests/test_models.py:86: AssertionError</failure></testcase><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lot_of_people.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lot_of_people_output.pth]" time="5.581"><failure message="AssertionError: Number of predictions does not match&#10;assert 16 == 18&#10; +  where 16 = len(tensor([0.9984, 0.9982, 0.9970, 0.9951, 0.9949, 0.9940, 0.9744, 0.9677, 0.9479,\n        0.6635, 0.6008, 0.3141, 0.2364, 0.0751, 0.0697, 0.0564],\n       grad_fn=&lt;IndexBackward0&gt;))&#10; +  and   18 = len(tensor([0.9993, 0.9987, 0.9986, 0.9985, 0.9980, 0.9980, 0.9954, 0.9920, 0.9892,\n        0.9889, 0.9682, 0.9497, 0.9437, 0.8958, 0.8798, 0.8627, 0.8613, 0.8238]))">image_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lot_of_people.jpeg'
+target_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/lot_of_people_output.pth'
+
+    @pytest.mark.parametrize(
+        "image_path, target_path",
+        [(os.path.join(root_dir, 'tests/img_test/lying.jpeg'), os.path.join(root_dir, 'tests/img_test/lying_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/night.jpeg'), os.path.join(root_dir, 'tests/img_test/night_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/sun_glare.jpeg'), os.path.join(root_dir, 'tests/img_test/sun_glare_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/weelchair.jpeg'), os.path.join(root_dir, 'tests/img_test/weelchair_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/kid.png'), os.path.join(root_dir, 'tests/img_test/kid_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/african.jpeg'), os.path.join(root_dir, 'tests/img_test/african_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle_tunnel.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_tunnel_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/lot_of_people.jpeg'), os.path.join(root_dir, 'tests/img_test/lot_of_people_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bluring.jpeg'), os.path.join(root_dir, 'tests/img_test/bluring_output.pth'))]
+    )
+    
+    
+    
+    def test_model_performance(image_path, target_path):
+        """
+        Test the performance of the Pedestrian Detection model on various test images.
+        It loads the provided image and target, makes predictions using the loaded model, and checks
+        the predictions against the expected target values. The test evaluates the model's performance
+        by comparing predicted bounding boxes and masks with the expected target values.
+    
+        Parameters:
+        - image_path (str): The path to the test image.
+        - target_path (str): The path to the corresponding target result for the test image.
+    
+        Raises:
+        - AssertionError: If the model's predictions do not match the expected target values.
+        """
+    
+        # Load the image and target
+        image = Image.open(image_path).convert("RGB")
+        # Convert the single image to a batch (size 1)
+        image = [transforms.ToTensor()(image).to(device)]
+        target = torch.load(target_path, map_location=device)
+    
+        # Get model predictions for the input image
+        predictions = model(image)[0]
+    
+    
+        # Check if the predictions are empty or not --&gt; nothing to compare
+        if not predictions['boxes'].shape[0] and not target['boxes'].shape[0]:
+            return
+    
+        # Filter out predictions with scores lower than the threshold
+        score_threshold = 0.8
+        above_threshold = predictions['scores'] &gt;= score_threshold
+        predictions['boxes'] = predictions['boxes'][above_threshold]
+        predictions['masks'] = predictions['masks'][above_threshold]
+    
+        # Check the number of predictions
+&gt;       assert len(predictions['scores']) == len(
+            target['scores']), "Number of predictions does not match"
+E       AssertionError: Number of predictions does not match
+E       assert 16 == 18
+E        +  where 16 = len(tensor([0.9984, 0.9982, 0.9970, 0.9951, 0.9949, 0.9940, 0.9744, 0.9677, 0.9479,\n        0.6635, 0.6008, 0.3141, 0.2364, 0.0751, 0.0697, 0.0564],\n       grad_fn=&lt;IndexBackward0&gt;))
+E        +  and   18 = len(tensor([0.9993, 0.9987, 0.9986, 0.9985, 0.9980, 0.9980, 0.9954, 0.9920, 0.9892,\n        0.9889, 0.9682, 0.9497, 0.9437, 0.8958, 0.8798, 0.8627, 0.8613, 0.8238]))
+
+tests/test_models.py:86: AssertionError</failure></testcase><testcase classname="tests.test_models" name="test_model_performance[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bluring.jpeg-/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bluring_output.pth]" time="2.798"><failure message="AssertionError: Number of predictions does not match&#10;assert 4 == 1&#10; +  where 4 = len(tensor([0.9978, 0.9702, 0.8279, 0.0611], grad_fn=&lt;IndexBackward0&gt;))&#10; +  and   1 = len(tensor([0.9986]))">image_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bluring.jpeg'
+target_path = '/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/bluring_output.pth'
+
+    @pytest.mark.parametrize(
+        "image_path, target_path",
+        [(os.path.join(root_dir, 'tests/img_test/lying.jpeg'), os.path.join(root_dir, 'tests/img_test/lying_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/night.jpeg'), os.path.join(root_dir, 'tests/img_test/night_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/sun_glare.jpeg'), os.path.join(root_dir, 'tests/img_test/sun_glare_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/weelchair.jpeg'), os.path.join(root_dir, 'tests/img_test/weelchair_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/kid.png'), os.path.join(root_dir, 'tests/img_test/kid_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/african.jpeg'), os.path.join(root_dir, 'tests/img_test/african_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bicycle_tunnel.jpeg'), os.path.join(root_dir, 'tests/img_test/bicycle_tunnel_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/lot_of_people.jpeg'), os.path.join(root_dir, 'tests/img_test/lot_of_people_output.pth')),
+         (os.path.join(root_dir, 'tests/img_test/bluring.jpeg'), os.path.join(root_dir, 'tests/img_test/bluring_output.pth'))]
+    )
+    
+    
+    
+    def test_model_performance(image_path, target_path):
+        """
+        Test the performance of the Pedestrian Detection model on various test images.
+        It loads the provided image and target, makes predictions using the loaded model, and checks
+        the predictions against the expected target values. The test evaluates the model's performance
+        by comparing predicted bounding boxes and masks with the expected target values.
+    
+        Parameters:
+        - image_path (str): The path to the test image.
+        - target_path (str): The path to the corresponding target result for the test image.
+    
+        Raises:
+        - AssertionError: If the model's predictions do not match the expected target values.
+        """
+    
+        # Load the image and target
+        image = Image.open(image_path).convert("RGB")
+        # Convert the single image to a batch (size 1)
+        image = [transforms.ToTensor()(image).to(device)]
+        target = torch.load(target_path, map_location=device)
+    
+        # Get model predictions for the input image
+        predictions = model(image)[0]
+    
+    
+        # Check if the predictions are empty or not --&gt; nothing to compare
+        if not predictions['boxes'].shape[0] and not target['boxes'].shape[0]:
+            return
+    
+        # Filter out predictions with scores lower than the threshold
+        score_threshold = 0.8
+        above_threshold = predictions['scores'] &gt;= score_threshold
+        predictions['boxes'] = predictions['boxes'][above_threshold]
+        predictions['masks'] = predictions['masks'][above_threshold]
+    
+        # Check the number of predictions
+&gt;       assert len(predictions['scores']) == len(
+            target['scores']), "Number of predictions does not match"
+E       AssertionError: Number of predictions does not match
+E       assert 4 == 1
+E        +  where 4 = len(tensor([0.9978, 0.9702, 0.8279, 0.0611], grad_fn=&lt;IndexBackward0&gt;))
+E        +  and   1 = len(tensor([0.9986]))
+
+tests/test_models.py:86: AssertionError</failure></testcase><testcase classname="tests.test_negative_det" name="test_pedestrian_detection_positive[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/negative_detection.jpeg]" time="3.314" /><testcase classname="tests.test_positive_det" name="test_pedestrian_detection_positive[/Users/claudiamurplanchart/Documents/GCED/4t_curs/TAED2/taed2-PedestrianDetection/tests/img_test/positive_detection.jpeg]" time="3.166" /></testsuite></testsuites>
