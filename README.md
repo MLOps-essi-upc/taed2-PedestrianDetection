@@ -50,7 +50,7 @@ Project Organization
     │   │   └── data_docs_custom_styles.css
     │   ├── uncommitted
     │   │   ├── data_docs/local_site
-    │   │   │   ├── index.html          <- Great Expectations results
+    │   │   │   └── index.html          <- Great Expectations results
     │   │   ├── validation
     │   │   └── config_variables.yml
     │   └── great_expectations.yml
