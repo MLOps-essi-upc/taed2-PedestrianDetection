@@ -76,7 +76,7 @@ Project Organization
     ├── requirements.txt                <- The requirements file for reproducing the analysis 
     │                                   environment, generated with `pip freeze > requirements.txt`
     │
-    ├── setup.py                        <- makes project pip installable so src can be imported
+    ├── setup.py                        <- Makes project pip installable so src can be imported
     │
     ├── src                             <- Source code for use in this project
     │   ├── .gitignore                       
@@ -97,8 +97,8 @@ Project Organization
     │   │   ├── coco_eval.py
     │   │   ├── coco_utils.py
     │   │   ├── engine.py
-    │   │   ├── utils.py
-    │   │   └──  transforms.py
+    │   │   ├── transforms.py
+    │   │   └── utils.py
     │   │
     │   └── models                      <- Scripts to train models
     │       ├── .gitingore
@@ -117,7 +117,7 @@ Project Organization
     │   └── test_positive_det.py
     │
     ├── test_environtment.py   
-    └── tox.ini                         <- tox file with settings for running tox
+    └── tox.ini                         <- Tox file with settings for running tox
 
 
 --------
