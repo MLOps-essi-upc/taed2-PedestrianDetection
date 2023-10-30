@@ -1,15 +1,20 @@
-"""Main script: it includes our API initialization and endpoints."""
+"""
+Module Name: api.py
 
-import io
-from http import HTTPStatus
-from functools import wraps
+This module contains the API definition and endpoints.
+"""
 from datetime import datetime
+from functools import wraps
+from http import HTTPStatus
+import io
 import os
+
 from fastapi import FastAPI, UploadFile, Request, HTTPException
-from starlette.responses import StreamingResponse
 from PIL import Image
-from torchvision import transforms
+from starlette.responses import StreamingResponse
 import torch
+from torchvision import transforms
+
 from draw_segmentation_map import draw_segmentation_map
 from draw_mask_map import draw_mask_map
 
